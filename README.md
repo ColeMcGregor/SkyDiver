@@ -10,3 +10,6 @@ Hawk Lindner
 
 # Language
 React Native
+
+# Video referenced
+https://geekyants.com/blog/react-native-game-development---a-salient-guide
