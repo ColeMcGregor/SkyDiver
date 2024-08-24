@@ -16,6 +16,8 @@ import { GameScreen } from './screens/GameScreen';
 import { EndScreen } from './screens/EndScreen';
     //StatsScreen is the screen that will be shown alternatively after the start screen
 import { StatsScreen } from './screens/StatsScreen';
+    //import the GameProvider component from the GameContext file
+import { GameProvider } from './context/GameContext';
 
 
 //create the stack navigator, which will be used to navigate between the screens
