@@ -14,9 +14,10 @@ export const GameProvider = ({ children }) => {
     //create functions 
 
     //change score to accept in the value of whatever was hit, positive for good, negative for bad
-    const changeScore = ( {value} ) => {
-        setScore(score + value);
+    const changeScore = (value) => {
+        setScore((prevScore) => prevScore + value);
     };
+    
 
     //reset the game, set the score to 0, and set the gameOver state to false
     const resetGame = () => {

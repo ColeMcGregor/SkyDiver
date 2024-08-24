@@ -26,14 +26,16 @@ const Stack = createStackNavigator();
 //create the App component, which will be the main component of the app
 export default function App() {
     return (
-        <NavigationContainer>
-        <Stack.Navigator initialRouteName="Splash">
-            <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Start" component={StartScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Game" component={GameScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="End" component={EndScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Stats" component={StatsScreen} options={{ headerShown: false }} />
-        </Stack.Navigator>
-        </NavigationContainer>
+        <GameProvider>
+            <NavigationContainer>
+            <Stack.Navigator initialRouteName="Splash">
+                <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="Start" component={StartScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="Game" component={GameScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="End" component={EndScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="Stats" component={StatsScreen} options={{ headerShown: false }} />
+            </Stack.Navigator>
+            </NavigationContainer>
+        </GameProvider>
     );
 }
