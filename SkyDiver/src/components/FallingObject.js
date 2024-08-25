@@ -33,10 +33,16 @@ export default class FallingObject {
   
     // Method to check collision if this object has collided with the player, in a box collider way
     checkCollision(playerX, playerY, playerWidth, playerHeight) {
+      // Check if the object's bounding box intersects with the player's bounding box, which is a simple box collider
       return (
+        //remember that the cartesian coordinate system is flipped in the y direction in programming(yes i know)
+        //first condition checks if the object's x position is less than the player's x position plus the player's width
         this.x < playerX + playerWidth &&
+        //second condition checks if the object's x position plus the object's width is greater than the player's x position
         this.x + this.width > playerX &&
+        //third condition checks if the object's y position is less than the player's y position plus the player's height
         this.y < playerY + playerHeight &&
+        //fourth condition checks if the object's y position plus the object's height is greater than the player's y position
         this.y + this.height > playerY
       );
     }
@@ -59,8 +65,83 @@ export default class FallingObject {
     // Method to handle the effect of the object (to be overridden)
     //allows for each object to have a different effect when it collides with the player
     //like change score, or add a multiplier, or end the game
-    applyEffect(gameContext) {
-      // Default behavior can be overridden by subclasses
+    applyEffect(gameContext, navigation) {
+      // will be overriden by subclasses
     }
   }
+
+  //override the FallingObject class to create different types of falling objects
+
+  //first, a skydiver object that moves in a sine wave pattern, needing to be dodged
+  class SkydiverObject extends FallingObject {
+    constructor(x, y, globalSpeed) {
+      super('skydiver', x, y, 0.5, { dx: 0, dy: 0.9 }, globalSpeed, images.skydiver);
+      this.amplitude = 50;
+      this.frequency = 0.05;
+    }
+  
+    fall() {
+      this.y -= this.globalSpeed;
+      this.y += this.speed * this.direction.dy;
+      this.x += this.amplitude * Math.sin(this.y * this.frequency);
+    }
+  
+    applyEffect(gameContext, navigation) {
+      // Skydiver object behavior (e.g., end the game or decrease points)
+    }
+  }
+  
+  //a hangglider object that ends the game when collided with, as you and mr hangglider cannot coexist in the same space
+  class HangGliderObject extends FallingObject {
+    constructor(x, y, globalSpeed) {
+      super('hangglider', x, y, 2, { dx: 1, dy: 0 }, globalSpeed, images.hangglider);
+    }
+  
+    applyEffect(gameContext, navigation) {
+      // End the game and navigate to the end screen
+      gameContext.setGameOver(true);
+      navigation.replace('End');  // this takes us to the End screen, or game over screen
+    }
+  }
+  
+  //a bird object that decreases the player's score when collided with
+  class BirdObject extends FallingObject {
+    constructor(x, y, globalSpeed) {
+      super('bird', x, y, 1, { dx: 0.3, dy: 0 }, globalSpeed, images.bird);
+    }
+  
+    applyEffect(gameContext, navigation) {
+      // Decrease player's score
+      gameContext.changeScore(-5);
+    }
+  }
+  
+  //a balloon object that increases the player's score when collided with
+  class BalloonObject extends FallingObject {
+    constructor(x, y, globalSpeed) {
+      super('balloon', x, y, 0, { dx: 0, dy: 0 }, globalSpeed, images.balloon);
+    }
+  
+    applyEffect(gameContext, navigation) {
+      // Increase player's score
+      gameContext.changeScore(10);
+    }
+  }
+  
+  // here we use a factory pattern (function) to create different types of falling objects
+  export function createFallingObject(type, x, y, globalSpeed) {
+    switch (type) {
+      case 'skydiver':
+        return new SkydiverObject(x, y, globalSpeed);
+      case 'hangglider':
+        return new HangGliderObject(x, y, globalSpeed);
+      case 'bird':
+        return new BirdObject(x, y, globalSpeed);
+      case 'balloon':
+        return new BalloonObject(x, y, globalSpeed);
+      default:
+        return null;
+    }
+  }
+
   
