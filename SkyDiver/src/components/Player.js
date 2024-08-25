@@ -35,7 +35,7 @@ export default function Player({ playerX, playerY, setPlayerX, setPlayerY }) {
     },
   });
 
-  // Determine which sprite to use based on the y-axis movement
+  // Determine which sprite to use based on y-axis 
   useEffect(() => {
     if (playerY < height / 2) {
       setCurrentSprite(sprites.slow); // Use the "up" sprite when moving up
