@@ -1,11 +1,16 @@
-//First screen that is displayed when the app is opened
-
 import React, { useEffect } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 
+/**
+ * SplashScreen component is the first screen displayed when the app is opened.
+ * It shows a splash image and then automatically navigates to the Start screen after a delay.
+ *
+ * @component
+ * @param {Object} props - The properties passed to the component.
+ * @param {Object} props.navigation - The navigation object provided by React Navigation.
+ * @returns {JSX.Element} A view containing the splash image, which navigates to the Start screen after 5 seconds.
+ */
 
-// make the splash screen a function to use hooks
-//takes in navigation as a prop, to allow for navigation to the start screen
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
     // Set a timeout to navigate to the Start screen after 5 seconds

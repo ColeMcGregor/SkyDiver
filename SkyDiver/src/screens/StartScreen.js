@@ -1,6 +1,16 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
+/**
+ * StartScreen component displays the main menu of the game with options to
+ * start the game, view stats, or view credits.
+ *
+ * @component
+ * @param {Object} props - The properties passed to the component.
+ * @param {Object} props.navigation - The navigation object provided by React Navigation.
+ * @returns {JSX.Element} A view with buttons to navigate to different screens.
+ */
+
 export default function StartScreen({ navigation }) {
   return (
     <View style={styles.container}>
@@ -8,7 +18,7 @@ export default function StartScreen({ navigation }) {
         style={styles.button}
         onPress={() => navigation.navigate('Game')}
       >
-        <Text style={styles.buttonText}>Start Game</Text>
+        <Text style={styles.buttonText}>Start</Text>
       </TouchableOpacity>
       
       <TouchableOpacity
