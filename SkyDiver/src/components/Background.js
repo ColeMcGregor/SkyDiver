@@ -11,7 +11,17 @@ const CLOUD_GENERATION_INTERVAL = 300;
 //define the dimensions of the screen
 const { width, height } = Dimensions.get('window');
 
-
+//preload all the cloud images
+const cloudImages = [
+    require('../sprites/Cloud1.png'),
+    require('../sprites/Cloud2.png'),
+    require('../sprites/Cloud3.png'),
+    require('../sprites/Cloud4.png'),
+    require('../sprites/Cloud5.png'),
+    require('../sprites/Cloud6.png'),
+    require('../sprites/Cloud7.png'),
+    require('../sprites/Cloud8.png'),
+];
 
 /**
  * Background component renders the background for all screens
@@ -31,35 +41,34 @@ export default function Background() {
     useEffect(() => {
         const generateCloud = () => {
           const cloudId = Date.now(); // Unique ID for each cloud, can skip an iterator
-          const randomCloud = Math.floor(Math.random() * 8) + 1; // to pick a random cloud from sprites
+          const randomCloud = Math.floor(Math.random() * cloudImages.length); // To pick a random cloud from preloaded images
           const randomX = Math.floor(Math.random() * width); // Random x position to spawn, clamped to screen width
           
           // Create a new cloud object, with the random cloud image, x position, and starting at the bottom of the screen
           const cloud = {
             id: cloudId,
-            // Use require to dynamically import the cloud image based on the random number
-            image: require(`../sprites/Cloud${randomCloud}.png`),
+            image: cloudImages[randomCloud], // Use preloaded cloud image
             x: randomX,
             y: height,
-            animatedValue: new Animated.Value(height), // bottom of the screen
+            animatedValue: new Animated.Value(height), // Start at the bottom of the screen
           };
-          //add the cloud to the clouds array
+          // Add the cloud to the clouds array
           setClouds((prevClouds) => [...prevClouds, cloud]);
-          //move the cloud up, and remove it once it moves off the screen
+          // Move the cloud up, and remove it once it moves off the screen
           Animated.timing(cloud.animatedValue, {
             toValue: 0, // Move to the top of the screen
-            duration: CLOUD_BASELINE_DURATION / globalSpeed, // use the global speed to determine the duration
-            useNativeDriver: true, //this means the animation is done on the native side, instead of the JS side
+            duration: CLOUD_BASELINE_DURATION / globalSpeed, // Use the global speed to determine the duration
+            useNativeDriver: true, // This means the animation is done on the native side, instead of the JS side
           }).start(() => {
             // Remove cloud once it moves off the screen
-            //it knows its done when it reaches the top of the screen
             setClouds((prevClouds) => prevClouds.filter(cld => cld.id !== cloudId));
           });
         };
-    
+        // Generate a cloud every generation interval
         const interval = setInterval(generateCloud, CLOUD_GENERATION_INTERVAL); // Generate a cloud every 0.3 seconds
         return () => clearInterval(interval);
-      }, [globalSpeed]); // Re-run if globalSpeed changes
+    }, [globalSpeed]); // Re-run if globalSpeed changes
+    
 
 
 
@@ -93,7 +102,7 @@ export default function Background() {
       <View style={styles.container}>
        {backgroundImage}
        {sunImage}
-       
+
        {clouds.map(cloud => (
         <Animated.Image
           key={cloud.id}
@@ -110,3 +119,19 @@ export default function Background() {
       </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    },
+    cloud: {
+      position: 'absolute',
+      width: 256,
+      height: 128,
+      resizeMode: 'center', //allows clipping of the image
+    },
+  });
