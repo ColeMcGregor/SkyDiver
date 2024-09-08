@@ -17,7 +17,7 @@ export const GameContext = createContext();
 export const GameProvider = ({ children }) => {
 
     /**
-     * @typedef {Object} GameState
+     * @typedef {Object} GameState - The state of the game, state as in the design pattern.
      * @property {number} score - The current score of the player.
      * @property {boolean} gameOver - The state of the game, true if the game is over.
      * @property {number} highestScore - The highest score achieved across all game sessions.
@@ -33,7 +33,7 @@ export const GameProvider = ({ children }) => {
     const [gameOver, setGameOver] = useState(false);
     const [highestScore, setHighestScore] = useState(0);  // New state for highest score
     const [recentScore, setRecentScore] = useState(0);  // New state for recent score
-    const [globalSpeed, setGlobalSpeed] = useState(10);
+    const [globalSpeed, setGlobalSpeed] = useState(70);
 
    /**
      * Updates the score based on the value passed. Also updates the highest score
@@ -57,12 +57,13 @@ export const GameProvider = ({ children }) => {
 /**
      * Updates the global speed, which simulates the player's speed in the game.
      * The higher the speed, the faster obstacles will move up the screen.
+     * The speed is clamped between 70 and 126.
      * 
-     * @param {number} value - The value to add to the current speed.
+     * @param {number} newSpeed - The value to add to the current speed.
      */
 
-    const changeSpeed = (value) => {
-        setGlobalSpeed((prevSpeed) => prevSpeed + value);
+    const changeSpeed = (newSpeed) => {
+      setGlobalSpeed(Math.max(70, Math.min(newSpeed, 126)));
     }
     
     /**

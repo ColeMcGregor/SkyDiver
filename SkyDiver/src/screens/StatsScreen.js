@@ -31,12 +31,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5', 
+    backgroundColor: '#f5f5f5', //a light grey color
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: '#333', //a dark grey color
   },
   label: {
     fontSize: 18,

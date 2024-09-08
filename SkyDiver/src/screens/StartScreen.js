@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-
+import Background from './Background';
+import Title from './Title';
 /**
  * StartScreen component displays the main menu of the game with options to
  * start the game, view stats, or view credits.
@@ -14,6 +15,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 export default function StartScreen({ navigation }) {
   return (
     <View style={styles.container}>
+      <Background/>
+      <Title/>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('Game')}
@@ -43,17 +46,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',  
+    backgroundColor: '#f5f5f5',  //a light grey color
   },
   button: {
-    backgroundColor: '#6200ee',  
+    backgroundColor: '#6200ee', //a purple color 
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 5,
     marginVertical: 10,  
   },
   buttonText: {
-    color: '#fff',  
+    color: '#fff',  //a white color
     fontSize: 18,
     fontWeight: 'bold',
   },

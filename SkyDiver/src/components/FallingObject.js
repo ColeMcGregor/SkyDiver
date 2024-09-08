@@ -1,14 +1,25 @@
 import React from 'react';
 import { Image } from 'react-native';
+import { GameContext } from '../GameContext';
+
+
+
+const images = {
+  Skydiver: require('../sprites/Skydiver.png'),
+  hangglider: require('../sprites/Hangglider.png'),
+  kite: require('../sprites/Kite.png'),
+  balloon: require('../sprites/Balloon.png'),
+  coin: require('../sprites/Coin.png'),
+  multiplier2x: require('../sprites/2Xmultiplier.png'),
+};
 
 
 export default class FallingObject {
-    constructor(type, x, y, speed, direction = { dx: 0, dy: 1 }, globalSpeed = 5, image) {
+    constructor(type, x, y, speed, direction = { dx: 0, dy: 1 },  image) {
       this.type = type;                     // Type of object (used for switching behavior)
       this.x = x;                           // X position
       this.y = y;                           // Y position
       this.speed = speed;                   // Object's own speed, for the direction vector
-      this.globalSpeed = globalSpeed;       // Global upward movement speed
       this.width = 50;                      // Default width
       this.height = 50;                     // Default height
       this.direction = direction;           // Direction vector for movement (dx, dy), which gives a slope
@@ -16,9 +27,9 @@ export default class FallingObject {
     }
   
     // Method to update the object's position based on its own movement and global upward movement
-    fall() {
+    fall(globalSpeed) {
       // Global upward movement, which is how we pretend our skydiver is falling
-      this.y -= this.globalSpeed;
+      this.y -= globalSpeed;
   
       // Additional movement based on the object's direction vector, or 
         // the object's own speed, as each object can be different
@@ -74,71 +85,103 @@ export default class FallingObject {
 
   //first, a skydiver object that moves in a sine wave pattern, needing to be dodged
   class SkydiverObject extends FallingObject {
-    constructor(x, y, globalSpeed) {
-      super('skydiver', x, y, 0.5, { dx: 0, dy: 0.9 }, globalSpeed, images.skydiver);
+    constructor(x, y) {
+      super('skydiver', x, y, 0.5, { dx: 0, dy: 0.9 }, images.skydiver);
       this.amplitude = 50;
       this.frequency = 0.05;
     }
   
-    fall() {
-      this.y -= this.globalSpeed;
+    fall(globalSpeed) {
+      this.y -= globalSpeed;
       this.y += this.speed * this.direction.dy;
       this.x += this.amplitude * Math.sin(this.y * this.frequency);
     }
   
     applyEffect(gameContext, navigation) {
-      // Skydiver object behavior (e.g., end the game or decrease points)
-    }
-  }
-  
-  //a hangglider object that ends the game when collided with, as you and mr hangglider cannot coexist in the same space
-  class HangGliderObject extends FallingObject {
-    constructor(x, y, globalSpeed) {
-      super('hangglider', x, y, 2, { dx: 1, dy: 0 }, globalSpeed, images.hangglider);
-    }
-  
-    applyEffect(gameContext, navigation) {
-      // End the game and navigate to the end screen
+      // end the game, as you and the other skydiver are now hurtling towards the ground
       gameContext.setGameOver(true);
       navigation.replace('End');  // this takes us to the End screen, or game over screen
     }
   }
   
-  //a bird object that decreases the player's score when collided with
-  class BirdObject extends FallingObject {
-    constructor(x, y, globalSpeed) {
-      super('bird', x, y, 1, { dx: 0.3, dy: 0 }, globalSpeed, images.bird);
+  //a hangglider object that ends the game when collided with, as you and mr hangglider cannot coexist in the same space
+  class HangGliderObject extends FallingObject {
+    constructor(x, y) {
+      super('hangglider', x, y, 2, { dx: 1, dy: 0 }, images.hangglider);
+    }
+  
+    applyEffect(gameContext, navigation) {
+      // End the game, as you and the hang glider cannot coexist in the same space
+      gameContext.setGameOver(true);
+      navigation.replace('End');  // this takes us to the End screen, or game over screen
+    }
+  }
+
+  //make a kite object that decreases the player's score when collided with
+  class KiteObject extends FallingObject {
+    constructor(x, y) {
+      super('kite', x, y, 0, { dx: 0, dy: 0 }, images.kite);
     }
   
     applyEffect(gameContext, navigation) {
       // Decrease player's score
-      gameContext.changeScore(-5);
+      gameContext.changeScore(gameContext.score - 10);
     }
   }
   
+  
   //a balloon object that increases the player's score when collided with
   class BalloonObject extends FallingObject {
-    constructor(x, y, globalSpeed) {
-      super('balloon', x, y, 0, { dx: 0, dy: 0 }, globalSpeed, images.balloon);
+    constructor(x, y) {
+      super('balloon', x, y, 0, { dx: 0, dy: 0 }, images.balloon);
     }
   
     applyEffect(gameContext, navigation) {
       // Increase player's score
-      gameContext.changeScore(10);
+      gameContext.changeScore(gameContext.score + 10);
+    }
+  }
+
+  //a coin object that increases the player's score when collided with
+  class CoinObject extends FallingObject {
+    constructor(x, y) {
+      super('coin', x, y, 0, { dx: 0, dy: 0 }, images.coin);
+    }
+  
+    applyEffect(gameContext, navigation) {
+      // Increase player's score a lot
+      gameContext.changeScore(gameContext.score + 50);
+    }
+  }
+
+  //a 2x multiplier object that increases the player's score by 2x when collided with
+  class Multiplier2xObject extends FallingObject {
+    constructor(x, y) {
+      super('2xmultiplier', x, y, 0, { dx: 0, dy: 0 }, images.multiplier2x);
+    }
+  
+    applyEffect(gameContext, navigation) {
+      // Increase player's score by 2x
+      gameContext.changeScore(gameContext.score * 2);
     }
   }
   
   // here we use a factory pattern (function) to create different types of falling objects
-  export function createFallingObject(type, x, y, globalSpeed) {
+  //this is a design pattern that allows us to create objects without specifying the exact class of object that will be created
+  export function createFallingObject(type, x, y) {
     switch (type) {
       case 'skydiver':
-        return new SkydiverObject(x, y, globalSpeed);
+        return new SkydiverObject(x, y);
       case 'hangglider':
-        return new HangGliderObject(x, y, globalSpeed);
-      case 'bird':
-        return new BirdObject(x, y, globalSpeed);
+        return new HangGliderObject(x, y);
+      case 'kite':
+        return new KiteObject(x, y);
       case 'balloon':
-        return new BalloonObject(x, y, globalSpeed);
+        return new BalloonObject(x, y);
+      case 'coin':
+        return new CoinObject(x, y);
+      case '2xmultiplier':
+        return new Multiplier2xObject(x, y);
       default:
         return null;
     }

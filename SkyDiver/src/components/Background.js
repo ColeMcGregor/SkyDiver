@@ -7,7 +7,6 @@ const CLOUD_BASELINE_DURATION = 15000;
 //define the generation interval for the clouds
 const CLOUD_GENERATION_INTERVAL = 300;
 
-
 //define the dimensions of the screen
 const { width, height } = Dimensions.get('window');
 
@@ -69,9 +68,6 @@ export default function Background() {
         return () => clearInterval(interval);
     }, [globalSpeed]); // Re-run if globalSpeed changes
     
-
-
-
     //create the images to be used
     //the Background image
     const backgroundImage = (
