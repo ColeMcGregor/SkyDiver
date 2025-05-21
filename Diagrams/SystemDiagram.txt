@@ -1,0 +1,90 @@
+@startuml
+
+' ---------------- Base Game Object ----------------
+abstract class GameObject {
+    +position: Vector2
+    +velocity: Vector2
+    +hitbox: RectF
+    +update(deltaTime: Float)
+    +draw(canvas: Canvas)
+}
+
+' ---------------- Player and Entities ----------------
+class Player {
+    +state: PlayerState
+    +currentSpeed: Float
+    +slide(input: MotionEvent)
+    +goFaster()
+    +goSlower()
+    +checkSlowDeath()
+}
+Player --|> GameObject : is a
+
+abstract class Obstacle {
+    +slowPenalty: Float
+    +isLethal: Boolean
+    +onPlayerCollision(player: Player)
+}
+Obstacle --|> GameObject : is a
+
+class HangGlider
+HangGlider --|> Obstacle : is a
+
+class KiteObstacle
+KiteObstacle --|> Obstacle : is a
+
+class BalloonObstacle
+BalloonObstacle --|> Obstacle : is a
+
+class Collectible {
+    +points: Int
+    +multiplier: Float
+    +onCollect(player: Player)
+}
+Collectible --|> GameObject : is a
+
+class Cloud {
+    +update()
+    +draw()
+}
+Cloud --|> GameObject : is a
+
+' ---------------- Game and UI Managers ----------------
+class GameManager {
+    +gameState: GameState
+    +player: Player
+    +objects: List<GameObject>
+    +speedManager: SpeedManager
+    +updateAll(deltaTime: Float)
+    +checkCollisions()
+    +spawnObstacle()
+}
+
+GameManager --> GameObject : manages
+GameManager --> UIManager : controls
+
+class UIManager {
+    +startScreen: StartScreen
+    +gameOverOverlay: GameOverOverlay
+    +optionsMenu: OptionsMenu
+    +show(screen: UIScreen)
+    +hide(screen: UIScreen)
+}
+
+abstract class UIScreen {
+    +show()
+    +hide()
+    +handleInput(event: MotionEvent)
+}
+
+class StartScreen
+class GameOverOverlay
+class OptionsMenu
+
+StartScreen --|> UIScreen : is a
+GameOverOverlay --|> UIScreen : is a
+OptionsMenu --|> UIScreen : is a
+
+UIManager --> UIScreen : displays
+
+@enduml
