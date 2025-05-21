@@ -77,9 +77,20 @@ abstract class UIScreen {
     +handleInput(event: MotionEvent)
 }
 
-class StartScreen
-class GameOverOverlay
-class OptionsMenu
+class StartScreen {
+    +startButton: Start
+    +optionsButton: Options
+    +achievementsButton: Achievements
+}
+class GameOverOverlay {
+    +startOverButton: Start Over
+    +mainMenuButton: Main Menu
+}
+class OptionsMenu {
+    +soundToggle : On/Off
+    +hapticToggle: On/Off
+
+}
 
 StartScreen --|> UIScreen : is a
 GameOverOverlay --|> UIScreen : is a
