@@ -1,0 +1,191 @@
+@startuml
+left to right direction
+skinparam classAttributeIconSize 0
+
+
+
+package "core.geometry" {
+    class Vector2 {
+        +x: Float
+        +y: Float
+        +plus(other: Vector2): Vector2
+        +minus(other: Vector2): Vector2
+        +times(scalar: Float): Vector2
+        +length(): Float
+        +normalize(): Vector2
+    }
+
+    class Rect {
+        +x: Float
+        +y: Float
+        +width: Float
+        +height: Float
+        +intersects(other: Rect): Boolean
+        +contains(point: Vector2): Boolean
+    }
+}
+
+package "core.events" {
+    class InputEvent {
+        +type: InputType
+        +position: Vector2
+        +timestamp: Long
+    }
+
+    enum InputType {
+        Tap
+        Drag
+        Hold
+    }
+}
+
+
+package "core.game" {
+    abstract class GameObject {
+        +position: Vector2
+        +velocity: Vector2
+        +hitbox: Rect
+        +update(deltaTime: Float)
+        +onDraw(renderer: GameRenderer)
+    }
+
+    class Player {
+        +state: PlayerState
+        +currentSpeed: Float
+        +slide(input: InputEvent)
+        +goFaster()
+        +goSlower()
+        +checkSlowDeath()
+    }
+
+    Player --|> GameObject : inherits
+
+    abstract class Obstacle {
+        +slowPenalty: Float
+        +isLethal: Boolean
+        +onPlayerCollision(player: Player)
+    }
+
+
+    class HangGlider 
+    class KiteObstacle
+    class BalloonObstacle
+    
+    HangGlider --|> Obstacle : is an
+    KiteObstacle --|> Obstacle : is an
+    BalloonObstacle --|> Obstacle : is an
+    Obstacle --|> GameObject : is a
+
+    class Collectible {
+        +points: Int
+        +multiplier: Float
+        +onCollect(player: Player)
+    }
+
+    Collectible --|> GameObject : is a
+
+    class Cloud
+    Cloud --|> GameObject : is a
+
+    class GameManager {
+        +player: Player
+        +objects: List<GameObject>
+        +speedManager: SpeedManager
+        +scoreManager: ScoreManager
+        +statsTracker: StatsTracker
+        +updateAll(deltaTime: Float)
+        +checkCollisions()
+        +spawnObstacle()
+    }
+
+
+
+    GameManager --> Player : manages
+    GameManager --> GameObject : updates
+    GameManager -down-> SpeedManager : contrls speed
+    GameManager -down-> DifficultyManager : scales difficulty
+    GameManager -down-> ScoreManager : adds score
+    GameManager -down-> StatsTracker : logs stats
+    GameManager -down-> SoundManager : plays sfx
+    GameManager -down-> GameRenderer : draws with
+}
+
+package "core.systems" {
+    class SpeedManager {
+        +gameSpeed: Float
+        +increaseOverTime(deltaTime: Float)
+    }
+
+    class DifficultyManager {
+        +currentLevel: Int
+        +adjustSpawnRate()
+    }
+
+    class ScoreManager {
+        +score: Int
+        +addPoints(points: Int, multiplier: Float)
+    }
+
+    class StatsTracker {
+        +gamesPlayed: Int
+        +recordRun(score: Int)
+    }
+
+    interface SoundManager {
+        +playSFX(name: String)
+        +toggleSound()
+    }
+
+    interface GameRenderer {
+        +drawPlayer(position: Vector2)
+        +drawObstacle(position: Vector2)
+        +drawCollectible(position: Vector2)
+    }
+}
+
+package "core.ui" {
+    interface UIScreen {
+        +show()
+        +hide()
+        +handleInput(event: InputEvent)
+    }
+
+    class StartScreen
+    class GameOverOverlay
+    class OptionsMenu
+
+    StartScreen ..|> UIScreen : is a type of
+    GameOverOverlay ..|> UIScreen : is a type of
+    OptionsMenu ..|> UIScreen : is a type of
+
+    class UIManager {
+        +show(screen: UIScreen)
+        +hide(screen: UIScreen)
+    }
+
+    UIManager -down-> UIScreen : displays
+}
+
+package "platform.android" {
+    class MotionEventAdapter {
+        +adapt(motionEvent): InputEvent
+    }
+
+    class CanvasRenderer {
+        +drawPlayer(position: Vector2)
+        +drawObstacle(position: Vector2)
+    }
+
+    CanvasRenderer ..|> GameRenderer : implements
+
+    class AndroidSoundManager {
+        +playSFX(name: String)
+        +toggleSound()
+    }
+
+    AndroidSoundManager ..|> SoundManager : is a type of
+    
+
+}
+
+@enduml
