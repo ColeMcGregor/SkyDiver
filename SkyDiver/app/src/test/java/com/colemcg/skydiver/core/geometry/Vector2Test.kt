@@ -1,9 +1,8 @@
-package com.colemcg.skydiver.core.UnitTests.geometry
+package geometry
 
-import com.colemcg.skydiver.core.geometry.Vector2
 import org.junit.Assert.*
 import org.junit.Test
-import kotlin.math.sqrt
+
 
 class Vector2Test {
 
