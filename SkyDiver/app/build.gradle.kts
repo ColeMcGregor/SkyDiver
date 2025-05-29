@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.colemcg.skydiver"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.colemcg.skydiver"
