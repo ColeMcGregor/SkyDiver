@@ -1,4 +1,4 @@
-package geometry
+package com.colemcg.skydiver.core.geometry
 
 import org.junit.Assert.*
 import org.junit.Test

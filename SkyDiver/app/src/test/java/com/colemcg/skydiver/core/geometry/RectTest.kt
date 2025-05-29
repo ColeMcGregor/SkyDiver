@@ -1,7 +1,5 @@
-package geometry
+package com.colemcg.skydiver.core.geometry
 
-import com.colemcg.skydiver.core.geometry.Rect
-import com.colemcg.skydiver.core.geometry.Vector2
 import org.junit.Assert.*
 import org.junit.Test
 
