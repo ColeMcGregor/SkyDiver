@@ -1,28 +1,49 @@
 package com.colemcg.skydiver.platform
-//brind in custom vector2 class
+
 import com.colemcg.skydiver.core.geometry.Vector2
 
-/*
-* Abstract class for all game renderers, Android and IOS
-* Subclasses implement all their own logic for the system they are on.
-*/
+/**
+ * Abstract class for all game renderers (e.g., Android, iOS).
+ * Subclasses implement platform-specific drawing logic.
+ * 
+ * author: Cole McGregor
+ * date: 2025-05-31
+ */
 abstract class GameRenderer {
 
-    //draw player sprite
+    // Draw the player sprite at the given position
     abstract fun drawPlayer(position: Vector2)
 
-    //draw obstacle sprites(like a hangglider)
+    // Draw an obstacle sprite (e.g., kite, hang glider)
     abstract fun drawObstacle(position: Vector2)
 
-    //draw collectible sprites(like coins)
+    // Draw a collectible sprite (e.g., coin, token)
     abstract fun drawCollectible(position: Vector2)
 
-    //draw background objects(like clouds)
+    // Draw non-interactive background objects (e.g., clouds, birds)
     abstract fun drawBackgroundObjects(position: Vector2)
 
-    //clear the screen, for when the game is restarted
+    // Draw the static background layer (e.g., PNG image or gradient)
+    abstract fun drawBackgroundLayer(position: Vector2)
+
+    // Draw a UI element (e.g., score label or icon) at a specific position
+    abstract fun drawUIElement(name: String, position: Vector2)
+
+    // Draw the title text (e.g., level name or game name)
+    abstract fun drawTitle(title: String)
+
+    // Draw a message overlay (e.g., "Paused", "Game Over")
+    abstract fun drawMessageOverlay(message: String)
+
+    // Draw a visual particle effect (e.g., sparkle, impact) at a position
+    abstract fun drawParticleEffect(position: Vector2, type: String)
+
+    // Draw full-screen overlays (e.g., pause menu, options menu)
+    abstract fun drawOverlay(name: String)
+
+    // Optional: Clear the screen before rendering a new frame
     open fun clearScreen() {}
 
-    //flush the screen, for the end of a frame
+    // Optional: Flush and present the current frame
     open fun flush() {}
 }
