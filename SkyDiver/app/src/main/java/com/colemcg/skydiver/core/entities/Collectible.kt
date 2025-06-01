@@ -3,7 +3,7 @@ package com.colemcg.skydiver.core.entities
 import com.colemcg.skydiver.core.geometry.Vector2
 import com.colemcg.skydiver.core.geometry.Rect
 import com.colemcg.skydiver.platform.GameRenderer
-import com.colemcg.skydiver.core.game.Player
+import com.colemcg.skydiver.core.entities.Player
 
 /**
  * Represents a collectible object (e.g., coin, token) that the player can collect for points.
