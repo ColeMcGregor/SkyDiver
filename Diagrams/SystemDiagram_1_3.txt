@@ -173,13 +173,13 @@ package "core.ui" {
         +handleInput(event: InputEvent)
     }
 
-    class StartScreen
+    class StartOverlay
     class GameOverOverlay
-    class OptionsMenu
+    class OptionsOverlay
 
-    StartScreen ..|> UIScreen : is a type of
+    StartOverlay ..|> UIScreen : is a type of
     GameOverOverlay ..|> UIScreen : is a type of
-    OptionsMenu ..|> UIScreen : is a type of
+    OptionsOverlay ..|> UIScreen : is a type of
 
     class UIManager {
         +show(screen: UIScreen)
