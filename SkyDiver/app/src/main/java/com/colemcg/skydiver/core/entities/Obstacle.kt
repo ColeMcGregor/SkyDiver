@@ -1,4 +1,4 @@
-package com.colemcg.skydiver.core.game
+package com.colemcg.skydiver.core.entities
 
 import com.colemcg.skydiver.core.geometry.Vector2
 import com.colemcg.skydiver.core.geometry.Rect
