@@ -2,9 +2,15 @@ package com.colemcg.skydiver.core.geometry
 
 import kotlin.math.sqrt
 
-//Vector2 is a 2D vector with x and y components
-//it is used to represent a point in 2D space or a direction and magnitude
-
+/**
+ * Vector2 is a 2D vector with x and y components
+ * it is used to represent a point in 2D space or a direction and magnitude
+ * 
+ * @param x The x component of the vector.
+ * @param y The y component of the vector.
+ * 
+ * @author Cole McGregor
+ */
 
 data class Vector2(var x: Float = 0f, var y: Float = 0f) {
 

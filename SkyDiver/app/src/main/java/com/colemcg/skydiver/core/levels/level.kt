@@ -4,6 +4,12 @@ import com.colemcg.skydiver.core.entities.GameObject
 import com.colemcg.skydiver.core.entities.Obstacle
 import com.colemcg.skydiver.core.entities.Collectible
 
+/**
+ * Abstract class for all levels in the game.
+ * 
+ * @author Cole McGregor
+ */
+
 abstract class Level {
 
     abstract val name: String                    // e.g., "Volcano Tube"

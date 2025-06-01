@@ -7,6 +7,11 @@ import com.colemcg.skydiver.platform.GameRenderer
 /**
  * Abstract base class for all interactive game objects, this includes players, obstacles, clouds, and collectibles.
  * Subclasses implement all their own logic for the type of object they are.
+ * 
+ * @param position The position of the game object.
+ * @param velocity The velocity of the game object.
+ * 
+ * @author Cole McGregor
  */
 abstract class GameObject(
     var position: Vector2,

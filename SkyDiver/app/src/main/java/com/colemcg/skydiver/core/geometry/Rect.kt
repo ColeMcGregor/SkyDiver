@@ -9,6 +9,8 @@ package com.colemcg.skydiver.core.geometry
  * @param y The y coordinate of the top left corner of the rectangle
  * @param width The width of the rectangle
  * @param height The height of the rectangle
+ * 
+ * @author Cole McGregor
  */
 
  //this is the constructor for the Rect class

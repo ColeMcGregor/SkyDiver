@@ -12,8 +12,16 @@ enum class PlayerState {
     Normal, Slowed, Dead
 }
 
-//player class
-//is a subclass of GameObject, and therefore has a position, velocity, and hitbox
+/**
+ * Player class
+ * is a subclass of GameObject, and therefore has a position, velocity, and hitbox
+ * 
+ * @param position The position of the player.
+ * @param velocity The velocity of the player.
+ * 
+ * @author Cole McGregor
+ */
+
 class Player(
     position: Vector2,
     velocity: Vector2 = Vector2(0f, 0f)

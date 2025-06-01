@@ -7,6 +7,14 @@ import com.colemcg.skydiver.core.entities.Player
 
 /**
  * Represents a collectible object (e.g., coin, token) that the player can collect for points.
+ * 
+ * @param points The number of points the collectible is worth.
+ * @param multiplier The multiplier for the points value.
+ * @param position The position of the collectible.
+ * @param width The width of the collectible.
+ * @param height The height of the collectible.
+ * 
+ * @author Cole McGregor
  */
 class Collectible(
     val points: Int,

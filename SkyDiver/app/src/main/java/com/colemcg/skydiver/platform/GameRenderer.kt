@@ -6,8 +6,7 @@ import com.colemcg.skydiver.core.geometry.Vector2
  * Abstract class for all game renderers (e.g., Android, iOS).
  * Subclasses implement platform-specific drawing logic.
  * 
- * author: Cole McGregor
- * date: 2025-05-31
+ * @author Cole McGregor
  */
 abstract class GameRenderer {
 
