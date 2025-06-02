@@ -256,26 +256,91 @@ package "core.systems" {
 
 package "core.ui" {
     interface UIScreen {
-        +show()
-        +hide()
-        +handleInput(event: InputEvent)
+        +show(): void
+        +hide(): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
     }
 
-    class StartOverlay
-    class GameOverOverlay
-    class OptionsOverlay
+    class StartOverlay {
+        +show(): void
+        +hide(): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
+        +onStartPressed(): void
+        +onOptionsPressed(): void
+        +onStatsPressed(): void
+        +onCreditsPressed(): void
+    }
+
+    class GameOverOverlay {
+        +show(): void
+        +hide(): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
+        +onReturnPressed(): void
+    }
+
+    class OptionsOverlay {
+        +show(): void
+        +hide(): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
+        +onBackPressed(): void
+    }
+
+    class PauseOverlay {
+        +show(): void
+        +hide(): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
+        +onResumePressed(): void
+        +onQuitPressed(): void
+    }
+
+    class StatsOverlay {
+        +show(): void
+        +hide(): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
+        +onBackPressed(): void
+    }
+
+    class CreditsOverlay {
+        +show(): void
+        +hide(): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
+        +onBackPressed(): void
+
+    }
 
     StartOverlay ..|> UIScreen : is a type of
     GameOverOverlay ..|> UIScreen : is a type of
     OptionsOverlay ..|> UIScreen : is a type of
+    PauseOverlay ..|> UIScreen : is a type of
+    StatsOverlay ..|> UIScreen : is a type of
+    CreditsOverlay ..|> UIScreen : is a type of
 
     class UIManager {
-        +show(screen: UIScreen)
-        +hide(screen: UIScreen)
+        +activeScreen: UIScreen
+        +show(screen: UIScreen): void
+        +hide(screen: UIScreen): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
     }
 
-    UIManager -down-> UIScreen : displays
+    UIManager --> UIScreen : displays
 }
+
 
 package "platform.android" {
     class MotionEventAdapter {
