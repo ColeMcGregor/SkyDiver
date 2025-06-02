@@ -16,8 +16,8 @@ abstract class Level {
     abstract val name: String                    // e.g., "Volcano Tube"
     abstract val backgroundImage: String         // PNG or resource ID
     open val initialOffset: Float = 0f           // Optional vertical scroll start
-    abstract val obstacleTypes: List<() -> Obstacle>
-    abstract val collectibleTypes: List<() -> Collectible>
-    abstract val bgObjectTypes: List<() -> BackgroundObject>
+    abstract val obstacleTypes: List<() -> Obstacle> // List of functions that return new instances of Obstacle
+    abstract val collectibleTypes: List<() -> Collectible> // List of functions that return new instances of Collectible
+    abstract val bgObjectTypes: List<() -> BackgroundObject> // List of functions that return new instances of BackgroundObject
 
 }
