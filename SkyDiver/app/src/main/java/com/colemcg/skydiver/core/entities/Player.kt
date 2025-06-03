@@ -65,6 +65,13 @@ class Player(
         // Implement collision logic here
     }
 
+    //reset player
+    fun reset() {
+        position = Vector2(0f, 0f) // TODO: these need changing to the actual starting position of the player
+        velocity = Vector2(0f, 0f)
+        state = PlayerState.Normal
+    }
+
 //override functions from GameObject
 
     //update player position
