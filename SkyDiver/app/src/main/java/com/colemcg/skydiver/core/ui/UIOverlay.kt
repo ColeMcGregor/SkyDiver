@@ -3,12 +3,12 @@ package com.colemcg.skydiver.core.ui
 import com.colemcg.skydiver.core.events.InputEvent
 
 /**
- * Interface for UI screens such as the start screen, options menu, or game over overlay.
- * Each screen is responsible for drawing itself and handling input events.
+ * Interface for UI overlays such as the start screen, options menu, or game over overlay.
+ * Each overlay is responsible for drawing itself and handling input events.
  * 
  * @author Cole McGregor
  */
-interface UIScreen {
+interface UIOverlay {
 
     /**
      * Called when the screen becomes visible.
