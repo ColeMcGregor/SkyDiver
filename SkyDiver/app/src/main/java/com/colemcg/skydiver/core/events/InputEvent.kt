@@ -16,5 +16,6 @@ import com.colemcg.skydiver.core.geometry.Vector2
 data class InputEvent(
     val type: InputType,
     val position: Vector2,
-    val timestamp: Long
+    val timestamp: Long,
+    val direction: Vector2? = null //this is for directional drag events
 )

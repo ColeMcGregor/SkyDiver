@@ -29,12 +29,14 @@ package "core.events" {
         +type: InputType
         +position: Vector2
         +timestamp: Long
+        +direction: Vector2
     }
 
     enum InputType {
         Tap
         Drag
         Hold
+        DirectionalDrag
     }
 }
 

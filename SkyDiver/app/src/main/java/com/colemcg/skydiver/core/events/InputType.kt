@@ -11,5 +11,6 @@ package com.colemcg.skydiver.core.events
 enum class InputType {
     Tap,
     Drag,
-    Hold
+    Hold,
+    DirectionalDrag
 }
