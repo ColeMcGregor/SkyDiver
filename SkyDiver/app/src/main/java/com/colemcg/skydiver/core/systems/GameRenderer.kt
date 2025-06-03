@@ -1,4 +1,4 @@
-package com.colemcg.skydiver.platform
+package com.colemcg.skydiver.core.systems
 
 import com.colemcg.skydiver.core.geometry.Vector2
 
