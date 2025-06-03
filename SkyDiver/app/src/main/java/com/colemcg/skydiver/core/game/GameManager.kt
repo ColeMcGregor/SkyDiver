@@ -3,7 +3,6 @@ package com.colemcg.skydiver.core.game
 import com.colemcg.skydiver.core.geometry.Vector2
 import com.colemcg.skydiver.core.systems.*
 import com.colemcg.skydiver.core.levels.LevelManager
-import com.colemcg.skydiver.platform.GameRenderer
 import com.colemcg.skydiver.core.entities.GameObject
 import com.colemcg.skydiver.core.entities.Player
 import com.colemcg.skydiver.core.entities.Spawner

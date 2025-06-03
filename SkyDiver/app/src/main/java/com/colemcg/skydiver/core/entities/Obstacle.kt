@@ -2,7 +2,7 @@ package com.colemcg.skydiver.core.entities
 
 import com.colemcg.skydiver.core.geometry.Vector2
 import com.colemcg.skydiver.core.geometry.Rect
-import com.colemcg.skydiver.platform.GameRenderer
+import com.colemcg.skydiver.core.systems.GameRenderer
 import com.colemcg.skydiver.core.entities.GameObject
 
 /**
