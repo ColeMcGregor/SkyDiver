@@ -51,8 +51,8 @@ class Player(
     /*The below are still stub functions, and will be implemented in the future */
 
     //move left/right  with slide input
-    fun slide(input: InputEvent) { 
-        // move left/right  with slide input
+    fun movePlayer(input: InputEvent) {
+        // move according to the pseudo-Joystick type movement
     }
 
     //collect collectible, used for collectible logic
