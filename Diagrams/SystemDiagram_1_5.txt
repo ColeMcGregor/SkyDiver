@@ -1,0 +1,427 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "core.geometry" {
+    class Vector2 {
+        +x: Float
+        +y: Float
+        +plus(other: Vector2): Vector2
+        +minus(other: Vector2): Vector2
+        +times(scalar: Float): Vector2
+        +length(): Float
+        +normalize(): Vector2
+    }
+
+    class Rect {
+        +x: Float
+        +y: Float
+        +width: Float
+        +height: Float
+        +intersects(other: Rect): Boolean
+        +contains(point: Vector2): Boolean
+    }
+}
+
+
+
+package "core.events" {
+    class InputEvent {
+        +type: InputType
+        +position: Vector2
+        +timestamp: Long
+    }
+
+    enum InputType {
+        Tap
+        Drag
+        Hold
+    }
+}
+
+package "core.levels" {
+    abstract class Level {
+        +abstract name: String
+        +abstract backgroundImage: String
+        +open initialOffset: Float
+        +abstract obstacleTypes: List
+        +abstract collectibleTypes: List
+        +abstract bgObjectTypes: List
+        
+    }
+
+    class LevelManager {
+        -levels: Map<String, Level>
+        -currentLevel: Level
+
+        +registerLevel(level: Level): void
+        +switchTo(levelName: String): Boolean
+        +getAvailableLevels(): List<Level>
+        +getCurrentLevel(): Level
+    }
+
+
+    LevelManager --> Level : manages
+}
+
+package "core.entitities" {
+    abstract class GameObject {
+        +position: Vector2
+        +velocity: Vector2
+        +abstract hitbox: Rect
+        +abstract update(deltaTime: Float)
+        +abstract onDraw(renderer: GameRenderer)
+    }
+
+    class Player {
+        +position: Vector2
+        +velocity: Vector2
+        +state: PlayerState
+        +currentSpeed: Float
+        +hitbox: Rect
+        +slide(input: InputEvent)
+        +goFaster()
+        +goSlower()
+        +slide(input: InputEvent)
+        +onCollect(collectible: Collectible)
+        +onCollision(obstacle: Obstacle)
+        +update(deltaTime: Float)
+        +onDraw(renderer: GameRenderer)
+    }
+
+    Player --|> GameObject : inherits
+
+    abstract class Obstacle {
+        +position: Vector2
+        +velocity: Vector2
+        +hitbox: Rect, 
+        +slowPenalty: Float
+        +isLethal: Boolean
+        +abstract onPlayerCollision(player: Player)
+        +update(deltaTime: Float)
+        +onDraw(renderer: GameRenderer)
+    }
+
+    class HangGlider
+    class KiteObstacle
+    class BalloonObstacle
+    
+    HangGlider --|> Obstacle : is an
+    KiteObstacle --|> Obstacle : is an
+    BalloonObstacle --|> Obstacle : is an
+    Obstacle --|> GameObject : is a
+
+    class Collectible {
+        +points: Int
+        +multiplier: Float
+        +position: Vector2
+        +width: Float
+        +height: Float
+        +onCollect(player: Player)
+        +hitbox: Rect
+        +update(deltaTime: Float)
+        +onDraw(renderer: GameRenderer)
+    }
+
+    Collectible --|> GameObject : is a
+    
+    abstract class BackgroundObject {
+        +position: Vector2
+        +velocity: Vector2
+        +parallaxFactor: Float
+        +abstract hitbox: Rect
+        +abstract update(deltaTime: Float)
+        +abstract onDraw(renderer: GameRenderer)
+    }
+
+    BackgroundObject --|> GameObject : is a
+
+    class Cloud 
+
+    Cloud --|> BackgroundObject : is a
+}
+
+
+package "platform.android" {
+    class MotionEventAdapter {
+        +adapt(motionEvent): InputEvent
+    }
+
+    class CanvasRenderer {
+        +drawPlayer(position: Vector2)
+        +drawObstacle(position: Vector2)
+    }
+
+    CanvasRenderer ..|> GameRenderer : implements
+
+    class AndroidSoundManager {
+        +playSFX(name: String)
+        +toggleSound()
+    }
+
+    AndroidSoundManager ..|> SoundManager : is a type of
+
+    class AndroidStorage {
+        +putInt(key: String, value: Int)
+        +getInt(key: String, default: Int): Int
+        +clear(): void
+    }
+
+    AndroidStorage ..|> KeyValueStorage : implements
+}
+
+package "platform.ios" {
+    class TouchEventAdapter {
+        +adapt(touchEvent): InputEvent
+    }
+
+    class UIKitRenderer {
+        +drawPlayer(position: Vector2)
+        +drawObstacle(position: Vector2)
+    }
+
+    UIKitRenderer ..|> GameRenderer : implements
+
+    class IOSSoundManager {
+        +playSFX(name: String)
+        +toggleSound()
+    }
+
+    IOSSoundManager ..|> SoundManager : is a type of
+
+    class IOSStorage {
+        +putInt(key: String, value: Int)
+        +getInt(key: String, default: Int): Int
+        +clear(): void
+    }
+
+    IOSStorage ..|> KeyValueStorage : implements
+}
+
+package "core.game" {
+
+    class Spawner {
+        -spawnTimer: Float
+        -spawnInterval: Float
+        -levelManager: LevelManager
+
+        +update(deltaTime: Float, objects: MutableList<GameObject>): void
+        +reset(): void
+        +spawnObstacle(): Obstacle
+        +spawnCollectible(): Collectible
+    }
+
+    Spawner --> LevelManager : uses for config
+    Spawner --> Obstacle : creates
+    Spawner --> Collectible : creates
+    Spawner --> GameObject : adds to
+
+     class GameManager {
+        +player: Player
+        +objects: List<GameObject>
+        +spawner: Spawner
+        +speedManager: SpeedManager
+        +difficultyManager: DifficultyManager
+        +scoreManager: ScoreManager
+        +statsTracker: StatsTracker
+        +levelManager: LevelManager
+
+        +updateAll(deltaTime: Float): void
+        +drawAll(renderer: GameRenderer): void
+        +checkCollisions(): void
+        +removeDeadObjects(): void
+        +reset(): void
+    }
+    
+    Collectible --> Player : onCollect
+    Obstacle --> Player : onPlayerCollision
+
+    GameManager --> Player : owns
+    GameManager --> GameObject : updates
+    GameManager --> Spawner : controls spawning via
+    GameManager --> SpeedManager : adjusts pacing via
+    GameManager --> DifficultyManager : adjusts pressure via
+    GameManager --> ScoreManager : rewards performance via
+    GameManager --> StatsTracker : records run data to
+    GameManager --> LevelManager : queries level data from
+    GameManager --> GameRenderer : draws to
+}
+
+package "core.systems" {
+    class SpeedManager {
+        -gameSpeed: Float
+        -minimumSpeed: Float
+        -maximumSpeed: Float
+        -speedIncreaseRate: Float
+        -minSpeedIncreaseRate: Float
+
+        +update(deltaTime: Float): void
+        +applySlowdown(amount: Float): void
+        +applySpeedup(amount: Float): void
+        +getGameSpeed(): Float
+        +reset(): void
+    }
+
+    class DifficultyManager {
+        -currentLevel: Int
+        -timeElapsed: Float
+        -difficultyStepTime: Float
+
+        +update(deltaTime: Float): void
+        +adjustSpawnRate(): Float
+        +reset(): void
+    }
+
+
+    class ScoreManager {
+        -score: Int
+        -currentStreak: Int
+        -maxStreak: Int
+        -comboMultiplier: Float
+
+        +addPoints(basePoints: Int): void
+        +incrementStreak(): void
+        +resetStreak(): void
+        +resetScore(): void
+        +getScore(): Int
+        +getMaxStreak(): Int
+    }
+
+    class StatsTracker {
+        +gamesPlayed: Int
+        +highestScore: Int
+        +lastScore: Int
+        +totalScore: Int
+
+        +recordRun(score: Int): void
+        +getAverageScore(): Float
+        +resetStats(): void
+    }
+
+    interface SoundManager {
+        +playSFX(name: String): void
+        +stopSFX(name: String): void
+        +playMusic(name: String, loop: Boolean = true): void
+        +stopMusic(): void
+        +toggleSound(): void
+        +isMuted(): Boolean
+        +setSFXVolume(level: Float): void
+        +setMusicVolume(level: Float): void
+        +getSFXVolume(): Float
+        +getMusicVolume(): Float
+    }
+
+
+    interface KeyValueStorage {
+        +putInt(key: String, value: Int)
+        +getInt(key: String, default: Int): Int
+        +clear(): void
+    }
+
+    StatsTracker --> KeyValueStorage : uses
+
+    abstract class GameRenderer {
+        +drawPlayer(position: Vector2)
+        +drawObstacle(position: Vector2)
+        +drawCollectible(position: Vector2)
+        +drawBackgroundObjects(position: Vector2)
+        +drawBackgroundLayer(position: Vector2)
+        +drawUIElement(name: String, position: Vector2)
+        +drawTitle(title: String)
+        +drawMessageOverlay(message: String)
+        +drawParticleEffect(position: Vector2, type: String)
+        +drawOverlay(name: String)
+        +clearScreen()
+        +flush()
+
+    }
+}
+
+package "core.ui" {
+    interface UIOverlay {
+        +show(): void
+        +hide(): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
+    }
+
+    class StartOverlay {
+        +show(): void
+        +hide(): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
+        +onStartPressed(): void
+        +onOptionsPressed(): void
+        +onStatsPressed(): void
+        +onCreditsPressed(): void
+    }
+
+    class GameOverOverlay {
+        +show(): void
+        +hide(): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
+        +onReturnPressed(): void
+    }
+
+    class OptionsOverlay {
+        +show(): void
+        +hide(): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
+        +onBackPressed(): void
+    }
+
+    class PauseOverlay {
+        +show(): void
+        +hide(): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
+        +onResumePressed(): void
+        +onQuitPressed(): void
+    }
+
+    class StatsOverlay {
+        +show(): void
+        +hide(): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
+        +onBackPressed(): void
+    }
+
+    class CreditsOverlay {
+        +show(): void
+        +hide(): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
+        +onBackPressed(): void
+
+    }
+
+    StartOverlay ..|> UIOverlay : is a type of
+    GameOverOverlay ..|> UIOverlay : is a type of
+    OptionsOverlay ..|> UIOverlay : is a type of
+    PauseOverlay ..|> UIOverlay : is a type of
+    StatsOverlay ..|> UIOverlay : is a type of
+    CreditsOverlay ..|> UIOverlay : is a type of
+
+    class UIManager {
+        +activeScreen: UIOverlay
+        +show(screen: UIOverlay): void
+        +hide(screen: UIOverlay): void
+        +handleInput(event: InputEvent): void
+        +update(deltaTime: Float): void
+        +draw(renderer: GameRenderer): void
+    }
+
+    UIManager --> UIOverlay : displays
+}
+
+
+@enduml
