@@ -1,49 +1,71 @@
 # Skydiver
 
-**Skydiver** is a fast-paced, modular arcade game where you control a skydiver navigating dangerous vertical environments. With increasing speed and limited visibility, players must avoid deadly obstacles like hang gliders and manage slowdown from balloons and kites — all while descending through diverse, immersive levels.
+**Skydiver** is a modular 2D arcade game focused on reactive movement, scalable difficulty, and clean system architecture. Players guide a falling avatar through procedurally populated vertical spaces, avoiding hazards while managing speed and momentum under increasing pressure.
 
-Crafted with an eye toward extensibility, *Skydiver* features a flexible level system allowing for unique, themed drop zones — from the classic open sky theme to spy-movie volcano shafts to icy crystal caverns.
-
----
-
-## Gameplay Features
-
-- **Touch-based Controls**: Swipe or tilt to maneuver mid-air
-- **Scaling Game Speed**: Natural acceleration + strategic deceleration
-- **Dynamic Obstacles**:
-  - *Kites & Balloons*: Slow you down
-  - *Hang Gliders*: Cause instant failure
-- **Modular Multilevel System**: Easily add new themed environments
-- **Clouds & Fog**: Aesthetic layers with potential gameplay effects
-- **Local Achievements**: Track progress without backend dependency
+The codebase emphasizes **separation of concerns**, **declarative UI overlays**, and **domain-driven structure**, making it suitable for extensible gameplay and maintainable architecture. Core logic is decoupled from rendering and input, enabling platform-agnostic loop control and modular UI layering.
 
 ---
 
-## Multilevel Design
+## 🎮 Gameplay Systems
 
-The architecture supports **drop-in themed levels** by:
+- **Decoupled Input & Motion**  
+  Player steering is handled through directional drag events.
+  
+- **Dynamic Pacing Engine**  
+  Speed naturally accelerates with decay penalties triggered by obstacle collisions.
 
-- Decoupling obstacle sets, background art, and physics profiles
-- Organizing environments into swappable "Level Modules"
-- Supporting future zones like:
-  - **Volcano Tube** – minecarts, magma jets, heat distortion
-  - **Icy Cavern** – frozen gusts, stalactites, slick speed boosts
- 
-## Built With
-Kotlin + Jetpack Compose
-Custom game loop with decoupled render/update logic
-Lightweight geometry engine for collision detection
-JUnit for testing vector math and rectangle interaction
+- **Collision-Driven Events**  
+  - *Non-lethal* slowdowns: Balloons, Kites  
+  - *Lethal* collisions: Hang Gliders
 
-## Core Systems
-Vector2 and Rect: Foundational math for movement and collision
-GameManager: Central state machine for gameplay
-LevelLoader: Abstracted loading for backgrounds & obstacle behavior
-Player: Modular logic for drag, inertia, collision response
+- **Modular Level Design**  
+  Themed zones are plug-and-play, with their own visuals, difficulty curves, and obstacle pools.
 
-## Authors
-Cole McGregor – Software Engineer · Designer · Artist
-Jardina “Jar” Gomez – Software Engineer · Designer · Artist
-Together we engineer the core, design the levels, and draw every image
+- **Overlay-Driven UI**  
+  Menus and state transitions (Pause, Options, Game Over, Start) are handled via isolated overlays.
 
+- **Local Stat Persistence**  
+  High scores and player metrics are saved across sessions using injected key-value storage.
 
+---
+
+## 🧱 System Architecture
+
+| Layer                     | Description                                               |
+|--------------------------|-----------------------------------------------------------|
+| `GameLoop`               | Abstract loop interface with platform-specific hooks      |
+| `GameManager`            | Central coordinator of update and draw calls              |
+| `Spawner`                | Controls timed obstacle and collectible generation        |
+| `Player`                 | Handles movement, velocity, and input logic               |
+| `UIManager`              | Coordinates active UI overlay stack                       |
+| `StatsManager` / `ScoreManager` | Tracks session and persistent stats               |
+| `SoundManager` / `KeyValueStorage` | Abstracted platform services (injected)      |
+
+---
+
+## 💡 Design Principles
+
+- **Modular GameObjects** – Self-managed update/render behavior  
+- **Functional Separation** – Input, logic, and rendering layers are isolated  
+- **Backend Agnosticism** – Core logic depends only on interfaces  
+- **State-Driven Flow** – Controlled via a shared `GameState` singleton  
+
+---
+
+## 🛠️ Built With
+
+- **Kotlin** + Jetpack Compose (Android)
+- **Custom Game Loop** with platform callback control
+- **Minimal Geometry Engine** using `Vector2` and `Rect`
+- **JUnit** for collision/math testing
+
+---
+
+## 🧑‍🤝‍🧑 Authors
+
+**Garrett "Cole" McGregor** – Architecture · Systems · Gameplay  
+**Jardina “Jar” Gomez** – Design · Animation · Worldbuilding
+
+> A handcrafted game framework focused on extensibility, readability, and player flow.
+
+---
