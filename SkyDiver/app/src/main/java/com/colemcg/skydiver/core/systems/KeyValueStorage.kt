@@ -1,23 +1,3 @@
-/**
- * Abstract interface for persistent key-value storage access.
- *
- * Provides a simple contract for storing and retrieving
- * basic values (e.g., Ints) across game sessions.
- * Intended to abstract platform-specific persistence APIs like
- * Android SharedPreferences or iOS UserDefaults.
- *
- * Responsibilities:
- * - Save and retrieve primitive values by key.
- * - Clear all stored data when requested.
- * - Serve as a backend for systems like StatsManager or OptionsManager.
- *
- * This interface should be implemented per platform and injected
- * where needed to support long-term persistence without tight coupling.
- *
- * Example keys: "highScore", "gamesPlayed", "musicVolume"
- *
- * @author Cole McGregor
- */
 package com.colemcg.skydiver.core.systems
 
 /**
@@ -60,7 +40,7 @@ interface KeyValueStorage {
     fun getInt(key: String, default: Int): Int
 
     //not as of yet needed and therefore not implemented methods:
-    
+
     // fun putString(key: String, value: String)
     // fun getString(key: String, default: String): String
 
