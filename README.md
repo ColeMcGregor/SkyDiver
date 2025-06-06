@@ -63,7 +63,7 @@ The codebase emphasizes **separation of concerns**, **declarative UI overlays**,
 
 ## 🧑‍🤝‍🧑 Authors
 
-**Cole McGregor** – Architecture · Systems · Gameplay  
+**Garrett "Cole" McGregor** – Architecture · Systems · Gameplay  
 **Jardina “Jar” Gomez** – Design · Animation · Worldbuilding
 
 > A handcrafted game framework focused on extensibility, readability, and player flow.
