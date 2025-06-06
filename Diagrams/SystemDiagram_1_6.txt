@@ -93,10 +93,6 @@ package "core.entitities" {
         +onDraw(renderer: GameRenderer)
     }
 
-    class HangGlider
-    class KiteObstacle
-    class BalloonObstacle
-
     class Collectible {
         +points: Int
         +multiplier: Float
@@ -111,7 +107,12 @@ package "core.entitities" {
         +abstract update(deltaTime: Float)
         +abstract onDraw(renderer: GameRenderer)
     }
-
+    
+    class HangGlider
+    class Kite
+    class Balloon
+    class Multiplier
+    class Coin
     class Cloud
 }
 
@@ -403,14 +404,14 @@ UIOverlay --> GameState : modifies state (start, pause, resume)
 
 LevelManager --> Level : manages use and storage of
 
-CanvasRenderer ..|> GameRenderer : renders android visuals
-UIKitRenderer ..|> GameRenderer : renders IOS visuals
+CanvasRenderer ..|> GameRenderer : renders game visuals
+UIKitRenderer ..|> GameRenderer : renders UI graphics
 
-AndroidSoundManager ..|> SoundManager : implements android sound system
-IOSSoundManager ..|> SoundManager : implements IOS sound system
+AndroidSoundManager ..|> SoundManager : implements sound system
+IOSSoundManager ..|> SoundManager : implements sound system
 
-AndroidStorage ..|> KeyValueStorage : implements android persistent storage
-IOSStorage ..|> KeyValueStorage : implements IOS persistent storage
+AndroidStorage ..|> KeyValueStorage : implements persistent storage
+IOSStorage ..|> KeyValueStorage : implements persistent storage
 
 AndroidGameLoop ..|> GameLoop : android game loop logic
 IOSGameLoop ..|> GameLoop : iOS game loop logic
@@ -418,14 +419,16 @@ IOSGameLoop ..|> GameLoop : iOS game loop logic
 Collectible --> Player : onCollect
 Obstacle --> Player : onPlayerCollision
 
-Player --|> GameObject : inherits GameObject behavior
-Obstacle --|> GameObject : inherits GameObject behavior
-Collectible --|> GameObject : inherits GameObject behavior
-BackgroundObject --|> GameObject : inherits GameObject behavior
-HangGlider --|> Obstacle : inherits obstacle (and therefore GameObject) behavior
-KiteObstacle --|> Obstacle : inherits obstacle (and therefore GameObject) behavior
-BalloonObstacle --|> Obstacle : inherits obstacle (and therefore GameObject) behavior
-Cloud --|> BackgroundObject : inherits GameObject behavior, and a parallaxFactor
+Player --|> GameObject : is a type of
+Obstacle --|> GameObject : is a type of
+Collectible --|> GameObject : is a type of
+BackgroundObject --|> GameObject : is a type of
+HangGlider --|> Obstacle : is a type of
+Kite --|> Obstacle : is a type of
+Balloon --|> Obstacle : is a type of
+Coin --|> Collectible : is a type of
+Multiplier --|> Collectible : is a type of
+Cloud --|> BackgroundObject : is a type of
 
 StatsTracker --> KeyValueStorage : saves and loads stats using
 
