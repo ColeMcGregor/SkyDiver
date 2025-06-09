@@ -52,7 +52,7 @@ class UIManager (
     /**
      * Updates the currently active screen with the time passed since the last update.
      *
-     * @param deltaTime The time passed since the last update, in seconds.
+     * @param deltaTime The time passed since the last update.
      */
     fun update(deltaTime: Float){
         activeScreen?.update(deltaTime)
@@ -64,6 +64,6 @@ class UIManager (
      * @param renderer The renderer to use for drawing UI elements.
      */
     fun draw(renderer: GameRenderer){
-        actvieScreen?.draw(renderer)
+        activeScreen?.draw(renderer)
     }
 }
