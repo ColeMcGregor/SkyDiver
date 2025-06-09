@@ -66,5 +66,6 @@ class Spawner(private val levelManager: LevelManager) {
         val x = Random.nextFloat() * 720f   // needs to changed to get the screen width
         val y = -100f                       // Spawns just above the screen
         return Vector2(x, y)
+        // TODO: bind spawn to breadth of x value depending on typical subset or 
     }
 }
