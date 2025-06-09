@@ -24,9 +24,9 @@ interface GameLoop {
     fun stop()
 
     /**
-     * Updates the game state based on the elapsed time since the last update.
+     * Updates the game state based on the elapsed time since the last update
      *
-     * @param deltaTime The time in seconds since the last update.
+     * @param deltaTime Tells how many ticks since the last update.
      */
     fun update(deltaTime: Float)
 

@@ -1,3 +1,5 @@
+package  com.colemcg.skydiver.core.systems
+
 /**
  * Interface for cross-platform sound effect and music playback.
  *
@@ -15,14 +17,15 @@
  * @author Jardina Gomez
  *
  */
-
-fun playSFX(name: String) {}
-fun stopSFX(name: String) {}
-fun playMusic(name: String, loop: Boolean) {}
-fun stopMusic(name: String) {}
-fun toggleSound() {}
-fun isMuted(): Boolean = false
-fun setSFXVolume(volume: Float) {}
-fun getSFXVolume(): Float = 1.0f // for right now
-fun setMusicVolume(volume: Float) {}
-fun getMusicVolume(): Float = 1.0f // for right now
+interface SoundManager {
+    fun playSFX(name: String) {}
+    fun stopSFX(name: String) {}
+    fun playMusic(name: String, loop: Boolean) {}
+    fun stopMusic(name: String) {}
+    fun toggleSound() {}
+    fun isMuted(): Boolean = false
+    fun setSFXVolume(volume: Float) {}
+    fun getSFXVolume(): Float = 1.0f // for right now
+    fun setMusicVolume(volume: Float) {}
+    fun getMusicVolume(): Float = 1.0f // for right now
+}
