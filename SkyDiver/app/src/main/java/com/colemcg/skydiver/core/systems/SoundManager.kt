@@ -14,18 +14,30 @@ package  com.colemcg.skydiver.core.systems
  *
  * This interface is platform-agnostic and injected into game components.
  *
- * @author Jardina Gomez
+ * @author Jardina Gomez(main body), Cole McGregor (comments, small edits for abstraction)
  *
  */
 interface SoundManager {
-    fun playSFX(name: String) {}
-    fun stopSFX(name: String) {}
-    fun playMusic(name: String, loop: Boolean) {}
-    fun stopMusic(name: String) {}
-    fun toggleSound() {}
+    // play a sound effect by name
+    fun playSFX(name: String) 
+    // stop a sound effect by name
+    fun stopSFX(name: String) 
+    // play background music by name
+    fun playMusic(name: String, loop: Boolean) 
+    // stop background music by name
+    fun stopMusic(name: String) 
+    // toggle sound on or off
+    fun toggleSound() 
+    // check if sound is muted
     fun isMuted(): Boolean = false
-    fun setSFXVolume(volume: Float) {}
-    fun getSFXVolume(): Float = 1.0f // for right now
-    fun setMusicVolume(volume: Float) {}
-    fun getMusicVolume(): Float = 1.0f // for right now
+    // set the volume of sound effects in total
+    fun setSFXVolume(volume: Float) 
+    // get the volume of sound effects in total
+    fun getSFXVolume(): Float = 1.0f // will be implemented in each platform
+    // set the volume of background music in total
+    fun setMusicVolume(volume: Float) 
+    // get the volume of background music in total
+    fun getMusicVolume(): Float = 1.0f // will be implemented in each platform
+    // get the volume of all sound in total
+    fun getTotalVolume(): Float = 1.0f // will be implemented in each platform
 }
