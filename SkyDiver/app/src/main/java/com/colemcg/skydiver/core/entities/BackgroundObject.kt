@@ -26,6 +26,17 @@ abstract class BackgroundObject(
     abstract override val hitbox: Rect
 
     /**
+     * Checks if the background object has moved off the screen and loops it if needed.
+     * This is used to create the illusion of a looping background.
+     * @param bgLoopHeight The height of the background loop.
+     */
+    fun checkAndLoopIfNeeded(bgLoopHeight: Float) {
+        if (position.y >= bgLoopHeight) {
+            position.y = -hitbox.height //the hitbox height is how tall the object is, start exactly that much above the screen
+        }
+    }
+
+    /**
      * Updates the background object’s position based on its velocity and parallax.
      */
     override fun update(deltaTime: Float) {
