@@ -1,12 +1,13 @@
 package com.colemcg.skydiver.core.ui
 
 import com.colemcg.skydiver.core.events.InputEvent
+import com.colemcg.skydiver.core.systems.GameRenderer
 
 /**
  * Interface for UI overlays such as the start screen, options menu, or game over overlay.
  * Each overlay is responsible for drawing itself and handling input events.
  * 
- * @author Cole McGregor
+ * @author Cole McGregor and Jardina Gomez(added last two methods)
  */
 interface UIOverlay {
 
@@ -29,4 +30,20 @@ interface UIOverlay {
      * @param event the input event to respond to
      */
     fun handleInput(event: InputEvent)
+
+    /**
+     * Updates the screen state based on the time passed since the last update.
+     * This is useful for animations or time-based logic.
+     *
+     * @param deltaTime the time in seconds since the last update
+     */
+    fun update(deltaTime: Float)
+
+    /**
+     * Draws the overlay to the screen.
+     * This method should handle all rendering logic for the overlay.
+     *
+     * @param renderer the renderer used to draw the overlay
+     */
+    fun draw(renderer: GameRenderer)
 }
