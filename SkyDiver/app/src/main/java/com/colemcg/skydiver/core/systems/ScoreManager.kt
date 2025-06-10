@@ -12,7 +12,7 @@ package com.colemcg.skydiver.core.systems
  *
  * Does not persist data across sessions; see StatsManager for history.
  *
- * @author 
+ * @author Cole McGregor
  */
 
  //a constant for how much the multiplier increases by each streak

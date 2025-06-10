@@ -12,5 +12,5 @@
  *
  * This is persistent across sessions unless reset explicitly.
  *
- * @author 
+ * @author Cole McGregor
  */
