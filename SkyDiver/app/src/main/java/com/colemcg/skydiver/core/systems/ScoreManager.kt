@@ -27,6 +27,9 @@ class ScoreManager(
     private var currentStreak: Int = 0 // the current streak of the player
     private var maxStreak: Int = 0 // the highest streak the player has had this round, not historically
     private var comboMultiplier: Float = baseMultiplier // the current combo multiplier
+    private var coinsCollected: Int = 0 // the number of coins collected by the player this run
+    private var multipliersCollected: Int = 0 // the number of multipliers collected by the player this run
+    private var obstaclesHit: Int = 0 // the number of obstacles hit by the player this run
 
     /**
      * Adds points to the score, applying the current combo multiplier.
@@ -51,7 +54,28 @@ class ScoreManager(
         }
     }
 
-     /**
+    /**
+     * Increments the number of coins collected by the player this run. used by 
+     */
+    fun incrementCoinsCollected() {
+        coinsCollected++
+    }
+
+    /**
+     * Increments the number of multipliers collected by the player this run.
+     */
+    fun incrementMultipliersCollected() {
+        multipliersCollected++
+    }
+
+    /**
+     * Increments the number of obstacles hit by the player this run.
+     */
+    fun incrementObstaclesHit() {
+        obstaclesHit++
+    }
+    
+    /**
      * Applies a bonus multiplier to the current combo multiplier.
      *
      * This stacks on top of the existing multiplier temporarily (e.g., from a collectible).
@@ -61,7 +85,6 @@ class ScoreManager(
     fun applyMultiplierBoost(multiplierBoost: Float) {
         comboMultiplier = (comboMultiplier + multiplierBoost).coerceAtMost(maxMultiplier)
     }
-
 
     /**
      * Resets the current streak and combo multiplier.
@@ -78,11 +101,17 @@ class ScoreManager(
         resetStreak()
     }
 
-    //getters
+//getters
     //get the current score
     fun getScore(): Int = score
     //get the highest streak the player has had this round, not historically
     fun getMaxStreak(): Int = maxStreak
     //get the current combo multiplier
     fun getComboMultiplier(): Float = comboMultiplier
+    //get the number of coins collected by the player this run
+    fun getCoinsCollected(): Int = coinsCollected
+    //get the number of multipliers collected by the player this run
+    fun getMultipliersCollected(): Int = multipliersCollected
+    //get the number of obstacles hit by the player this run
+    fun getObstaclesHit(): Int = obstaclesHit
 }
