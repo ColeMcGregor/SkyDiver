@@ -23,7 +23,7 @@ class GameManager(
     val speedManager: SpeedManager,
     val difficultyManager: DifficultyManager,
     val scoreManager: ScoreManager,
-    val statsTracker: StatsTracker,
+    val statsManager: StatsManager,
     val soundManager: SoundManager
 ) {
     val player = Player(Vector2(0f, 0f))
@@ -85,16 +85,30 @@ class GameManager(
         player.onDraw(renderer)
     }
 
-    // Check for collisions between player and objects, still a stub
+        // Check for collisions between player and objects
     private fun checkCollisions() {
-        // TODO: Implement spatial checking between player and each GameObject
-        //       - Apply onPlayerCollision() if Obstacle
-        //       - Apply onCollect() if Collectible
+        val playerHitbox = player.hitbox
+
+        for (obj in objects) {
+            if (playerHitbox.intersects(obj.hitbox)) {
+                when (obj) {
+                    is Collectible -> {
+                        player.onCollect(obj, scoreManager, soundManager)
+                        obj.isMarkedForRemoval = true
+                    }
+                    is Obstacle -> {
+                        player.onCollision(obj, scoreManager, speedManager, soundManager)
+                        obj.isMarkedForRemoval = true
+                    }
+                }
+            }
+        }
     }
+
 
     // Remove dead objects(not background objects) which means they have passed the screen height
     private fun removeDeadObjects() {
-        objects.removeIf { it.position.y > SCREEN_HEIGHT }
+        objects.removeIf { it.position.y > SCREEN_HEIGHT || it.isMarkedForRemoval }
     }
 
     // Reset the game, calling all necessary reset methods, and then spawns the initial background objects
