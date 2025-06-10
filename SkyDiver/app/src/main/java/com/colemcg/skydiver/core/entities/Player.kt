@@ -3,9 +3,13 @@ package com.colemcg.skydiver.core.entities
 import com.colemcg.skydiver.core.geometry.Vector2
 import com.colemcg.skydiver.core.geometry.Rect
 import com.colemcg.skydiver.core.systems.GameRenderer
+import com.colemcg.skydiver.core.systems.ScoreManager
+import com.colemcg.skydiver.core.systems.SpeedManager
+import com.colemcg.skydiver.core.systems.SoundManager
 import com.colemcg.skydiver.core.entities.GameObject
 import com.colemcg.skydiver.core.entities.Collectible
 import com.colemcg.skydiver.core.entities.Obstacle
+import com.colemcg.skydiver.core.events.InputEvent
 
 //player state enum for switch cases
 enum class PlayerState {
@@ -50,18 +54,18 @@ class Player(
 
     /*The below are still stub functions, and will be implemented in the future */
 
-    //move left/right  with slide input
+    //implement designed slide joystick movement
     fun movePlayer(input: InputEvent) {
         // move according to the pseudo-Joystick type movement
     }
 
     //collect collectible, used for collectible logic
-    fun onCollect(collectible: Collectible) {
+    fun onCollect(collectible: Collectible, scoreManager: ScoreManager, soundManager: SoundManager) {
         // Implement collectible logic here
     }
 
     //collision with obstacle, this is a typical name for a function that handles collisions
-    fun onCollision(obstacle: Obstacle) {
+    fun onCollision(obstacle: Obstacle, scoreManager: ScoreManager, speedManager: SpeedManager, soundManager: SoundManager) {
         // Implement collision logic here
     }
 
