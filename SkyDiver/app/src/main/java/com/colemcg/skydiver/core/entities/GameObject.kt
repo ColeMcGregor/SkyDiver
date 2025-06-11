@@ -15,7 +15,7 @@ import com.colemcg.skydiver.core.systems.GameRenderer
  */
 abstract class GameObject(
     var position: Vector2,
-    var velocity: Vector2 = Vector2(0f, 0f)
+    var velocity: Vector2 = Vector2(0f, 0f),
     var isMarkedForRemoval: Boolean = false
     
 ) {

@@ -46,7 +46,7 @@ class UIManager (
      * @param event The input event to handle, such as a tap or drag.
      */
     fun handleInput(event: InputEvent){
-        activeScreen?.handleInput(event)
+        activeScreen?.handleInput(event) // If there's an active screen, the event is passed to it
     }
 
     /**

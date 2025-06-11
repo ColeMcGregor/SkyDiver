@@ -7,7 +7,7 @@ import com.colemcg.skydiver.core.geometry.Rect
 import com.colemcg.skydiver.core.geometry.Vector2
 import com.colemcg.skydiver.core.systems.GameRenderer
 import com.colemcg.skydiver.core.ui.UIOverlay
-import jdk.internal.util.xml.impl.Input
+
 
 
 /**
@@ -123,15 +123,13 @@ class StartOverlay(
         renderer.drawText("Skydiver", 100f, 50f, size = 48f) // Example title
 
         // draw main menu buttons - replace nulls with actaul Vector2 postions when screen size has been figured out
+        // drawUIElement?
         renderer.drawButton("Start", /* Vector2(x1,y1) */ null) // Start button
         renderer.drawButton("Options", /* Vector2(x2,y2) */ null) // Options button
         renderer.drawButton("Stats", /* Vector2(x3,y3) */ null) // Stats button
         renderer.drawButton("Credits", /* Vector2(x4,y4) */ null) // Credits button
     }
 
-    companion object {
-        const val SCREEN_HEIGHT = 720 // Example height, adjust as needed
-    }
 }
 
 

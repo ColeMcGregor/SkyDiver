@@ -5,6 +5,7 @@ import com.colemcg.skydiver.core.systems.*
 import com.colemcg.skydiver.core.levels.LevelManager
 import com.colemcg.skydiver.core.entities.*
 
+
 /**
  * Manages the overall game state, including player, objects, and game systems.
  * Also manages the Spawner, SpeedManager, DifficultyManager, ScoreManager, StatsTracker, and SoundManager.
