@@ -435,6 +435,8 @@ IOSGameLoop ..|> GameLoop : iOS game loop logic
 Collectible --> Player : onCollect
 Obstacle --> Player : onPlayerCollision
 
+GameObject --> Rect : uses for Collisions
+GameObject --> Vector2 : uses for 2D Vectors
 Player --|> GameObject : is a type of
 Obstacle --|> GameObject : is a type of
 Collectible --|> GameObject : is a type of
@@ -454,5 +456,13 @@ OptionsOverlay ..|> UIOverlay : is a type of
 PauseOverlay ..|> UIOverlay : is a type of
 StatsOverlay ..|> UIOverlay : is a type of
 CreditsOverlay ..|> UIOverlay : is a type of
+
+GameLoop --> InputEvent : handles raw input
+UIManager --> InputEvent : forwards to overlay
+UIOverlay --> InputEvent : handles gesture
+Player --> InputEvent : reacts to gameplay input
+InputEvent --> InputType : uses input type enum
+InputEvent --> Vector2 : uses position & direction
+
 
 @enduml
