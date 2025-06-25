@@ -1,5 +1,8 @@
 package platform.android
 
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.app.GameState
 import android.util.Log
 import com.colemcg.skydiver.core.events.InputEvent
@@ -23,11 +26,13 @@ class AndroidGameLoop(
    private val gameManager: GameManager, // Game logic controller
     private val uiManager: UIManager, // UI manager for handling overlays
     private val gameState: GameState, // Tracks if game is paused, started , etc
-    private val targetFPS: Int = 60 // Target frames per second
 
 ) :GameLoop, Runnable{
 
+    var gameView: GameView? = null // gameview reference for rendering
+
     // -- Configuration --
+    private val targetFPS: Int = 60 // Target frames per second
     // how many nanoseconds each frame should take at the target FPS
     private val frameDurationNanos = 1_000_000_000L / targetFPS // Convert updates per second to nanoseconds
 
@@ -93,6 +98,17 @@ class AndroidGameLoop(
             // -- RENDERING --
             gameManager.drawAll(gameManager.speedManager) // draw gameplay
             uiManager.draw() // draw UI overlays
+
+            // -- TESTING WITH RED CIRCLE --
+            gameView?.lockAndDraw { canvas:Canvas->
+                val paint = Paint().apply {
+                    color = Color.RED
+                    style = Paint.Style.FILL
+                }
+                canvas.drawColor(Color.BLACK) // clear screen
+                canvas.drawCircle(300f, 600f, 100f, paint) // draw red circle
+            }
+
 
             // -- FRAME PACE CONTROL --
             val frameTime = System.nanoTime() - now // Total frame processing time
