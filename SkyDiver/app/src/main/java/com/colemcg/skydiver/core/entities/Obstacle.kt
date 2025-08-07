@@ -4,6 +4,9 @@ import com.colemcg.skydiver.core.geometry.Vector2
 import com.colemcg.skydiver.core.geometry.Rect
 import com.colemcg.skydiver.core.systems.GameRenderer
 import com.colemcg.skydiver.core.entities.GameObject
+import com.colemcg.skydiver.core.systems.ScoreManager
+import com.colemcg.skydiver.core.systems.SpeedManager
+import com.colemcg.skydiver.core.systems.SoundManager
 
 /**
  * Abstract class for all obstacles in the game.
@@ -26,7 +29,7 @@ abstract class Obstacle(
     val isLethal: Boolean
 ) : GameObject(position, velocity) {
 
-    abstract fun onPlayerCollision(player: Player)
+    abstract fun onCollision(player: Player, scoreManager: ScoreManager, speedManager: SpeedManager, soundManager: SoundManager)
 
     override fun update(deltaTime: Float) {
         position += velocity * deltaTime
@@ -34,7 +37,14 @@ abstract class Obstacle(
         hitbox.y = position.y
     }
 
+    /**
+     * Draws the obstacle using the provided GameRenderer.
+     * @param renderer The renderer that handles drawing to the screen.
+     * @param position The position of the obstacle.
+     * @param this The obstacle itself.
+     * @author Cole McGregor
+     */
     override fun onDraw(renderer: GameRenderer) {
-        renderer.drawObstacle(position)
+            renderer.drawGameObject(this, position)
     }
 }
