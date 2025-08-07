@@ -3,6 +3,8 @@ package com.colemcg.skydiver.core.entities
 import com.colemcg.skydiver.core.geometry.Vector2
 import com.colemcg.skydiver.core.geometry.Rect
 import com.colemcg.skydiver.core.systems.GameRenderer
+import com.colemcg.skydiver.core.systems.ScoreManager
+import com.colemcg.skydiver.core.systems.SoundManager
 
 /**
  * Abstract base class for collectible items (e.g., coins, multipliers).
@@ -40,7 +42,7 @@ abstract class Collectible(
     /**
      * Called when the player collects this object.
      */
-    abstract fun onCollect(player: Player)
+    abstract fun onCollect(player: Player, scoreManager: ScoreManager, soundManager: SoundManager)
 
     /**
      * Moves the collectible based on its velocity.
