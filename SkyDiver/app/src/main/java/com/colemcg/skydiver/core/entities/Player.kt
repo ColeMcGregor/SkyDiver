@@ -11,10 +11,23 @@ import com.colemcg.skydiver.core.entities.Collectible
 import com.colemcg.skydiver.core.entities.Obstacle
 import com.colemcg.skydiver.core.events.InputEvent
 
-//player state enum for switch cases
+//player state enum for switch cases, used in conjunction with sprite name for sprite application in renderering, as well as logic
 enum class PlayerState {
-    Normal, Slowed, Dead
+    Normal, Slowed, Fast
 }
+
+//TODO: adjust these constants to be more accurate to the actual player and sprite size
+//constants for player rect size(adjust here)   
+//fast player is the player when they are going fast
+const val FAST_PLAYER_WIDTH = 25f
+const val FAST_PLAYER_HEIGHT = 45f
+//normal player is the player when they are not slowed or dead
+const val NORMAL_PLAYER_WIDTH = 30f
+const val NORMAL_PLAYER_HEIGHT = 45f
+//slowed player is the player when they are slowed
+const val SLOWED_PLAYER_WIDTH = 45f
+const val SLOWED_PLAYER_HEIGHT = 25f
+
 
 /**
  * Player class
@@ -33,45 +46,50 @@ class Player(
 
     //player state at start
     var state: PlayerState = PlayerState.Normal
+    //sprite name (the player of course)
+    override val spriteName: String = "player"
+    //sprite size
+    override val spriteSize: Vector2 = Vector2(NORMAL_PLAYER_WIDTH, NORMAL_PLAYER_HEIGHT)
 
     //player current speed
     var currentSpeed: Float = 1.0f
 
-    override val hitbox: Rect = Rect(position.x, position.y, width = 30f, height = 50f)
+    //player hitbox
+    //this is a getter for the hitbox, and is used to get the hitbox of the player
+    //the hitbox changes size based on the state of the player
+    override val hitbox: Rect
+    get() {
+        val size = when (state) {
+            PlayerState.Normal -> Vector2(NORMAL_PLAYER_WIDTH, NORMAL_PLAYER_HEIGHT)
+            PlayerState.Slowed -> Vector2(SLOWED_PLAYER_WIDTH, SLOWED_PLAYER_HEIGHT)
+            PlayerState.Fast -> Vector2(FAST_PLAYER_WIDTH, FAST_PLAYER_HEIGHT)
+        }
+        return Rect(position.x, position.y, size.x, size.y)
+    }
 
-    //increase speed
+    //increase speed by 0.1f
     fun goFaster() { currentSpeed += 0.1f }
 
-    //increase speed by amount
+    //increase speed by amount specified
     fun goFaster(amount: Float) { currentSpeed += amount }
 
-    //decrease speed
+    //decrease speed by 0.1f
     fun goSlower() { currentSpeed -= 0.1f }
 
-    //decrease speed by amount
+    //decrease speed by amount specified
     fun goSlower(amount: Float) { currentSpeed -= amount }
 
 
     /*The below are still stub functions, and will be implemented in the future */
 
-    //implement designed slide joystick movement
+    //TODO: implement designed slide joystick movement
     fun movePlayer(input: InputEvent) {
         // move according to the pseudo-Joystick type movement
     }
 
-    //collect collectible, used for collectible logic
-    fun onCollect(collectible: Collectible, scoreManager: ScoreManager, soundManager: SoundManager) {
-        // Implement collectible logic here
-    }
-
-    //collision with obstacle, this is a typical name for a function that handles collisions
-    fun onCollision(obstacle: Obstacle, scoreManager: ScoreManager, speedManager: SpeedManager, soundManager: SoundManager) {
-        // Implement collision logic here
-    }
-
     //reset player
     fun reset() {
-        position = Vector2(0f, 0f) // TODO: these need changing to the actual starting position of the player
+        position = Vector2(0f, 0f) // TODO: these need changing to the actual starting position of the player(center of screen, slightly up)
         velocity = Vector2(0f, 0f)
         state = PlayerState.Normal
     }
@@ -87,8 +105,13 @@ class Player(
         hitbox.y = position.y
     }
 
-    //draw player
+    /**
+     * Draws the player using the provided GameRenderer.
+     * @param renderer The renderer that handles drawing to the screen.
+     * @param position The position of the player.
+     * @param this The player itself.
+     */
     override fun onDraw(renderer: GameRenderer) {
-        renderer.drawPlayer(position)
+        renderer.drawGameObject(this, position)
     }
 }
