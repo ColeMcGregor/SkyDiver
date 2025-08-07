@@ -50,7 +50,7 @@ class GameManager(
         speedManager.update(deltaTime)
 
         // Update the difficulty manager
-        difficultyManager.update(deltaTime)
+        difficultyManager.update();
 
         // Update the spawner
         spawner.update(deltaTime, objects)
@@ -60,7 +60,7 @@ class GameManager(
         // Update the background objects
         backgroundObjects.forEach {
             it.update(deltaTime)
-            it.checkAndLoopIfNeeded(bgLoopHeight)
+            it.checkAndLoopIfNeeded(bgLoopHeight.toFloat())
         }
 
         // Update the player
@@ -86,25 +86,32 @@ class GameManager(
         player.onDraw(renderer)
     }
 
-        // Check for collisions between player and objects
-    private fun checkCollisions() {
-        val playerHitbox = player.hitbox
-
-        for (obj in objects) {
-            if (playerHitbox.intersects(obj.hitbox)) {
-                when (obj) {
-                    is Collectible -> {
-                        player.onCollect(obj, scoreManager, soundManager)
-                        obj.isMarkedForRemoval = true
-                    }
-                    is Obstacle -> {
-                        player.onCollision(obj, scoreManager, speedManager, soundManager)
-                        obj.isMarkedForRemoval = true
+        /*
+         * Check for collisions between player and objects
+         * @param objects The list of objects to check for collisions with the player.
+         * @param player The player to check for collisions with.
+         * @param scoreManager The score manager to update the score.
+         * @author Cole McGregor
+         * @author Cole McGregor
+         */
+        private fun checkCollisions() {
+            val playerHitbox = player.hitbox
+        
+            for (obj in objects) {                                                                   //for each object in the objects list       
+                if (playerHitbox.intersects(obj.hitbox)) {                                           //if the player's hitbox intersects with the object's hitbox
+                    when (obj) {
+                        is Collectible -> {                                                          //if the object is a collectible
+                            obj.onCollect(player, scoreManager, soundManager)                        //call the onCollect function
+                            obj.isMarkedForRemoval = true                                            //mark the object for removal
+                        }
+                        is Obstacle -> {                                                             //if the object is an obstacle
+                            obj.onCollision(player, scoreManager, speedManager, soundManager)        //call the onCollision function
+                            obj.isMarkedForRemoval = true                                            //mark the object for removal
+                        }
                     }
                 }
             }
         }
-    }
 
 
     // Remove dead objects(not background objects) which means they have passed the screen height
