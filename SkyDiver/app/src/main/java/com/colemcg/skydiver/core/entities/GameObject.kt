@@ -18,9 +18,7 @@ abstract class GameObject(
     var velocity: Vector2 = Vector2(0f, 0f),
     var isMarkedForRemoval: Boolean = false
     
-    
 ) {
-
     open val spriteName: String = "" // to be overridden in concrete classes (e.g. "player", "obstacle", "cloud", "collectible")
     open val spriteSize: Vector2 = Vector2(64f, 64f) // default size, will be overridden in concrete classes
     abstract val hitbox: Rect // will be overridden in concrete classes, used for collision detection

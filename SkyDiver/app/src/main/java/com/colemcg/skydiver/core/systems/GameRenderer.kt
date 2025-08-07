@@ -1,6 +1,7 @@
 package com.colemcg.skydiver.core.systems
 
 import com.colemcg.skydiver.core.geometry.Vector2
+import com.colemcg.skydiver.core.entities.GameObject
 
 /**
  * Abstract class for all game renderers (e.g., Android, iOS).
@@ -10,17 +11,8 @@ import com.colemcg.skydiver.core.geometry.Vector2
  */
 abstract class GameRenderer {
 
-    // Draw the player sprite at the given position
-    abstract fun drawPlayer(position: Vector2)
-
-    // Draw an obstacle sprite (e.g., kite, hang glider)
-    abstract fun drawObstacle(position: Vector2)
-
-    // Draw a collectible sprite (e.g., coin, token)
-    abstract fun drawCollectible(position: Vector2)
-
-    // Draw non-interactive background objects (e.g., clouds, birds)
-    abstract fun drawBackgroundObjects(position: Vector2)
+    // Draw any sprite (e.g., kite, hang glider, player,etc.)
+    abstract fun drawGameObject(gameObject: GameObject)
 
     // Draw the static background layer (e.g., PNG image or gradient)
     abstract fun drawBackgroundLayer(position: Vector2)
