@@ -12,7 +12,7 @@ import com.colemcg.skydiver.core.entities.GameObject
 abstract class GameRenderer {
 
     // Draw any sprite (e.g., kite, hang glider, player,etc.)
-    abstract fun drawGameObject(gameObject: GameObject)
+    abstract fun drawGameObject(gameObject: GameObject, position: Vector2)
 
     // Draw the static background layer (e.g., PNG image or gradient)
     abstract fun drawBackgroundLayer(position: Vector2)
