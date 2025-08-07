@@ -14,9 +14,9 @@ import com.colemcg.skydiver.core.systems.GameRenderer
  * @author Cole McGregor
  */
 abstract class GameObject(
-    var position: Vector2,
-    var velocity: Vector2 = Vector2(0f, 0f),
-    var isMarkedForRemoval: Boolean = false
+    open var position: Vector2,
+    open var velocity: Vector2 = Vector2(0f, 0f),
+    open var isMarkedForRemoval: Boolean = false
     
 ) {
     open val spriteName: String = "" // to be overridden in concrete classes (e.g. "player", "obstacle", "cloud", "collectible")
