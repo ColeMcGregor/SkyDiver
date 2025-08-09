@@ -17,6 +17,10 @@ package com.colemcg.skydiver.core.systems
 
  //a constant for how much the multiplier increases by each streak
 const val STREAK_INCREASE_RATE = 0.25f
+// decay amount per second — e.g., 0.1 means lose 0.1 multiplier per second
+const val MULTIPLIER_ENTROPY_RATE = 0.1f
+//a constant for the time between updates
+const val SCORE_UPDATE_INTERVAL = 0.5f
 
 class ScoreManager(
     private val baseMultiplier: Float = 1.0f, // the base multiplier, which is the multiplier when the streak is 0
@@ -30,7 +34,31 @@ class ScoreManager(
     private var coinsCollected: Int = 0 // the number of coins collected by the player this run
     private var multipliersCollected: Int = 0 // the number of multipliers collected by the player this run
     private var obstaclesHit: Int = 0 // the number of obstacles hit by the player this run
+    private var timeSinceLastUpdate: Float = 0f // the time since the last update
 
+
+    /**
+     * Called every frame to apply multiplier decay over time.
+     * @param deltaTime Time elapsed since last frame, in seconds.
+     */
+    fun update(deltaTime: Float) {
+        //update the time since the last update
+        timeSinceLastUpdate += deltaTime
+        //if the time since the last update is greater than the score update interval, update the score
+        if (timeSinceLastUpdate >= SCORE_UPDATE_INTERVAL) {
+
+            //add points for staying alive
+            score += (1 * comboMultiplier.toInt())
+            //if the combo multiplier is greater than the base multiplier, decay the multiplier
+            if (comboMultiplier > baseMultiplier) {
+                comboMultiplier -= MULTIPLIER_ENTROPY_RATE
+                comboMultiplier = comboMultiplier.coerceAtLeast(baseMultiplier)
+            }
+
+            //reset the time since the last update
+            timeSinceLastUpdate = 0f
+        }
+    }
     /**
      * Adds points to the score, applying the current combo multiplier.
      * Call this when the player collects a score-bearing object.
@@ -83,7 +111,7 @@ class ScoreManager(
      * @param multiplierBoost The amount to add to the current multiplier.
      */
     fun applyMultiplierBoost(multiplierBoost: Float) {
-        comboMultiplier = (comboMultiplier + multiplierBoost).coerceAtMost(maxMultiplier)
+        comboMultiplier = ((comboMultiplier + multiplierBoost).coerceAtMost(maxMultiplier)).coerceAtLeast(MIN_MULTIPLIER)
     }
 
     /**
