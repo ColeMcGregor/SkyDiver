@@ -52,15 +52,16 @@ class Coin(position: Vector2 = Vector2()) : Collectible(position) {
     * Updates the coin's position based on its position, and the elapsed time.
     * DOESNT USE VELOCITY, as it is a circular motion, and drifts upward
     * @param deltaTime The time passed since the last update (in seconds).
-    * @author Cole McGregor
     */
     override fun update(deltaTime: Float) {
-        time += deltaTime
-        val angle = time * angularSpeed
+        time += deltaTime //add the change in time to the time variable
+        val angle = time * angularSpeed //calculate the angle based on the time and the angular speed
 
+
+        // TODO: MOTION NEEDS TO BE TESTED AND ADJUSTED
         // Circular horizontal offset
-        val dx = cos(angle) * radius * deltaTime
-        val dy = upwardSpeed * deltaTime
+        val dx = cos(angle) * radius * deltaTime //calculate the horizontal offset based on the angle and the radius
+        val dy = upwardSpeed + (sin(angle) * radius * deltaTime) //calculate the vertical offset based on the upward speed and the angle
 
         position.x += dx
         position.y += dy
