@@ -46,16 +46,17 @@ class GameManager(
         // If the game hasn't started or is over, don't update anything
         if (!GameState.gameStarted || GameState.gameOver) return
 
-        // Update the speed manager
+        // Update the speed manager (game speed adjustment)
         speedManager.update(deltaTime)
 
-        // Update the difficulty manager
-        difficultyManager.update();
+        // Update the difficulty manager(spawn interval adjustment, via performance score computation)
+        difficultyManager.update(deltaTime)
+
+        // Update the score manager (staying alive point giving, multiplier decay)
+        scoreManager.update(deltaTime)
 
         // Update the spawner
         spawner.update(deltaTime, objects)
-
-        player.update(deltaTime)
 
         // Update the background objects
         backgroundObjects.forEach {
