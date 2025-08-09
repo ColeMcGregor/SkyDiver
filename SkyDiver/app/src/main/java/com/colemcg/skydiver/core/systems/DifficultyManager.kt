@@ -15,6 +15,10 @@ import com.colemcg.skydiver.core.game.Spawner
  *
  * @author Cole McGregor
  */
+
+//a constant for the time between updates
+const val DIFFICULTY_UPDATE_INTERVAL = 3f
+
 class DifficultyManager(
     private val spawner: Spawner,                   // used to adjust the spawn interval
     private val scoreManager: ScoreManager,         // used to determine the performance score
@@ -22,8 +26,9 @@ class DifficultyManager(
     private val penaltyWeight: Float = 1.5f,        // How harshly obstacle hits are penalized (larger than 1 is more severe than collectibles help)
     private val sensitivity: Float = 0.05f          // How strongly performance affects difficulty
 ) {
-
+    //variables
     private var lastScoreSnapshot: Float = 0f      //used to determine the difference between the current performance and the last performance
+    private var timeSinceLastUpdate: Float = 0f    //used to determine the time since the last update
 
     /**
      * Resets difficulty back to default. Call this on session start or when the player dies
@@ -37,7 +42,13 @@ class DifficultyManager(
      * Updates the spawn interval based on current performance metrics.
      * Called regularly in the game loop to adjust the spawn interval
      */
-    fun update() {
+    fun update(deltaTime: Float) {
+        //update the time since the last update
+        timeSinceLastUpdate += deltaTime
+        //if the time since the last update is greater than 1 second, update the difficulty
+        if (timeSinceLastUpdate >= DIFFICULTY_UPDATE_INTERVAL) {
+
+            //compute the performance score
         val performance = computePerformanceScore()                 //our algorithm for determining the performance score
         val delta = performance - lastScoreSnapshot                 //the difference between the current performance and the last performance
         lastScoreSnapshot = performance
@@ -46,6 +57,10 @@ class DifficultyManager(
         val adjustedInterval = baseSpawnInterval * difficultyFactor //the adjusted interval is the base spawn interval multiplied by the difficulty factor
 
         spawner.setSpawnInterval(adjustedInterval) //update the spawn interval
+        //reset the time since the last update to 0
+        timeSinceLastUpdate = 0f
+
+        }
     }
 
     /**
