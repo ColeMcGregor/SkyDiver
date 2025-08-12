@@ -35,9 +35,23 @@ abstract class Collectible(
 
     /**
      * Dynamic hitbox that moves with the object.
+     * uses a backing field to avoid re-calculating the hitbox every time it is accessed
+     * this is a performance optimization
      */
+    //a backing field is a private variable that is used to store the value of a property
+    private val _hitbox = Rect(position.x, position.y, spriteSize.x, spriteSize.y)
+
+    //this is a property that is used to get the hitbox, overrides the hitbox property in GameObject
     override val hitbox: Rect
-        get() = Rect(position.x, position.y, spriteSize.x, spriteSize.y)
+        get() {
+            //update the hitbox to the current position and size
+            _hitbox.x = position.x
+            _hitbox.y = position.y
+            _hitbox.width = spriteSize.x
+            _hitbox.height = spriteSize.y
+            //return the updated hitbox
+            return _hitbox
+        }
 
     /**
      * Called when the player collects this object.
