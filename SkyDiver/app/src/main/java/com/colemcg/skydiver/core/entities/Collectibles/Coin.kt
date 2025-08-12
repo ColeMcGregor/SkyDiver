@@ -31,7 +31,7 @@ const val COIN_POINT_VALUE = 100
 class Coin(position: Vector2 = Vector2()) : Collectible(position) {
 
     override val spriteName = "coin"
-    override val spriteSize = Vector2(6f, 10f)
+    override val spriteSize = Vector2(4f, 6f)
 
     private var time = 0f
     private val angularSpeed = 2f         // radians per second
@@ -55,6 +55,8 @@ class Coin(position: Vector2 = Vector2()) : Collectible(position) {
     */
     override fun update(deltaTime: Float) {
         time += deltaTime //add the change in time to the time variable
+
+        //TODO: This angle needs tweaking
         val angle = time * angularSpeed //calculate the angle based on the time and the angular speed
 
 
