@@ -98,13 +98,18 @@ class GameManager(
         private fun checkCollisions() {
             val playerHitbox = player.hitbox
         
-            for (obj in objects) {                                                                   //for each object in the objects list       
-                if (playerHitbox.intersects(obj.hitbox)) {                                           //if the player's hitbox intersects with the object's hitbox
+            //check all objects
+            for (obj in objects) {            
+                //if the objects hitbox intersects with the player's hitbox                                                       //for each object in the objects list       
+                if (playerHitbox.intersects(obj.hitbox)) {      
+                    //when the object is a...                                     //if the player's hitbox intersects with the object's hitbox
                     when (obj) {
+                        //...collectible, call the onCollect function and mark the object for removal
                         is Collectible -> {                                                          //if the object is a collectible
                             obj.onCollect(player, scoreManager, soundManager)                        //call the onCollect function
                             obj.isMarkedForRemoval = true                                            //mark the object for removal
                         }
+                        //...obstacle, call the onCollision function and mark the object for removal
                         is Obstacle -> {                                                             //if the object is an obstacle
                             obj.onCollision(player, scoreManager, speedManager, soundManager)        //call the onCollision function
                             obj.isMarkedForRemoval = true                                            //mark the object for removal
@@ -129,7 +134,7 @@ class GameManager(
         difficultyManager.reset()
         scoreManager.resetScore()
         spawner.reset()
-        spawnInitialBackgroundObjects() //normally done by init()
+        spawnInitialBackgroundObjects() //normally done by init(), but the game is being reset, not initialized
     }
 
     // Spawns the initial background objects
