@@ -3,14 +3,15 @@ package platform.android
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.app.GameState
+//import android.app.GameState 
 import android.util.Log
 import com.colemcg.skydiver.core.events.InputEvent
 import com.colemcg.skydiver.core.game.GameLoop
 
-import core.game.GameManager
-import core.game.GameState
-import core.ui.UIManager
+
+import com.colemcg.skydiver.core.game.GameManager
+import com.colemcg.skydiver.core.game.GameState
+import com.colemcg.skydiver.core.ui.UIManager
 
 /**
  * Android-specific implementation of the GameLoop interface.
@@ -83,8 +84,8 @@ class AndroidGameLoop(
 
             // -- GAME LOGIC--
             // only update gameplay if started and not paused or over
-            if(gameState.gameStarted && !gameState.isPaused && !gameState.isGameOver) {
-                gameManager.update(deltaTime) // Update game logic with delta time
+            if(GameState.gameStarted && !GameState.gamePaused && !GameState.gameOver) {
+                gameManager.updateAll(deltaTime) // Update game logic with delta time
             }
 
             // Always update UI overlays like pause menu
