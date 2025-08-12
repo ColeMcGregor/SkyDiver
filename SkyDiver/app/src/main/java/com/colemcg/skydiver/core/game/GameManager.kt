@@ -27,9 +27,14 @@ class GameManager(
     val statsManager: StatsManager,
     val soundManager: SoundManager
 ) {
+    //GAMESTATE EXISTS AS A GLOBAL OBJECT, SO WE CAN ACCESS IT FROM ANYWHERE
+    //make a player object
     val player = Player(Vector2(0f, 0f))
+    //make a list of objects to hold all the objects in the game
     private val objects = mutableListOf<GameObject>()
+    //make a list of background objects to hold all the background objects in the game
     private val backgroundObjects = mutableListOf<BackgroundObject>()
+    //make a spawner object to handle the spawning of objects
     private val spawner = Spawner(levelManager)
 
     // Loop height is about 5 screens worth of vertical space
@@ -37,8 +42,15 @@ class GameManager(
 
     // Initialize the game manager
     init {
+
+
+
         // Initialize the background objects
         spawnInitialBackgroundObjects()
+
+        //TODO: this  might need changing to start at a trigger somehwere, like via a button on a start overlay
+        //start a new game state
+        GameState.startGame()
     }
 
     // Update all objects and game systems
