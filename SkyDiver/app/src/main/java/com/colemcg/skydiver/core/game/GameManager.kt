@@ -79,8 +79,8 @@ class GameManager(
         // Update the player
         player.update(deltaTime)
 
-        // Update the objects
-        objects.forEach { it.update(deltaTime) }
+        // Update the objects, some of which will need to know the player's position
+        objects.forEach { it.update(deltaTime, player) }
 
         // Check for collisions between player and objects
         checkCollisions()

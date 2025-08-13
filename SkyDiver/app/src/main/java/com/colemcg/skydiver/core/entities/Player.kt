@@ -99,7 +99,7 @@ class Player(
     //update player position
     //this is a classic update pattern for a game object, used to allow for smooth movement/actions to occur
     //it helps simulate time passing, and allows for smooth animations
-    override fun update(deltaTime: Float) {
+    override fun update(deltaTime: Float, player: Player) {
         position += velocity * deltaTime
         hitbox.x = position.x
         hitbox.y = position.y
