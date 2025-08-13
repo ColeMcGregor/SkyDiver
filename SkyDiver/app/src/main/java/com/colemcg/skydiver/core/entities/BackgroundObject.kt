@@ -39,7 +39,7 @@ abstract class BackgroundObject(
     /**
      * Updates the background object’s position based on its velocity and parallax.
      */
-    override fun update(deltaTime: Float) {
+    override fun update(deltaTime: Float, player: Player) {
         position += velocity * deltaTime * parallaxFactor
     }
 
@@ -47,6 +47,6 @@ abstract class BackgroundObject(
      * Draws the background object using the renderer.
      */
     override fun onDraw(renderer: GameRenderer) {
-        renderer.drawBackgroundObjects(position)
+        renderer.drawGameObject(this, position)
     }
 }
