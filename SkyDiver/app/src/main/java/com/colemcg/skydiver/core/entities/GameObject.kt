@@ -27,8 +27,9 @@ abstract class GameObject(
      * Updates the object's internal state.
      * @param deltaTime The time passed since the last update (in seconds).
      * @param player The player object, used for tracking the player's position
+     * @param gameSpeed The current game speed, used for adjusting the object's velocity
      */
-    abstract fun update(deltaTime: Float, player: Player)
+    abstract fun update(deltaTime: Float, player: Player, gameSpeed: Float)
 
     /**
      * Draws the object using the provided GameRenderer.

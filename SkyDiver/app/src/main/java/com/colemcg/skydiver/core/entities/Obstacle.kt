@@ -56,8 +56,8 @@ abstract class Obstacle(
      *  
      * SHOULD BE OVERRIDDEN BY SUBCLASSES, NOT A SUFFICIENT MOVEMENT FUNCTION
      */
-    override fun update(deltaTime: Float, player: Player) {
-        position += velocity * deltaTime
+    override fun update(deltaTime: Float, player: Player, gameSpeed: Float) {
+        position += velocity * deltaTime * gameSpeed
     }
 
     /**

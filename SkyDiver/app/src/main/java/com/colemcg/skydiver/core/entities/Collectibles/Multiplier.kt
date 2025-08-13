@@ -31,7 +31,7 @@ import com.colemcg.skydiver.core.systems.SoundManager
 
     }
 
-    override fun update(deltaTime: Float, player: Player) {
+    override fun update(deltaTime: Float, player: Player, gameSpeed: Float) {
 
         //TODO this needs to be implemented
 

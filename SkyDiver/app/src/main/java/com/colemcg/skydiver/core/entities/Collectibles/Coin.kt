@@ -53,7 +53,7 @@ class Coin(position: Vector2 = Vector2()) : Collectible(position) {
     * DOESNT USE VELOCITY, as it is a circular motion, and drifts upward
     * @param deltaTime The time passed since the last update (in seconds).
     */
-    override fun update(deltaTime: Float, player: Player) {
+    override fun update(deltaTime: Float, player: Player, gameSpeed: Float) {
         time += deltaTime //add the change in time to the time variable
 
         //TODO: This angle needs tweaking

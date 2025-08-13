@@ -39,8 +39,8 @@ abstract class BackgroundObject(
     /**
      * Updates the background object’s position based on its velocity and parallax.
      */
-    override fun update(deltaTime: Float, player: Player) {
-        position += velocity * deltaTime * parallaxFactor
+    override fun update(deltaTime: Float, player: Player, gameSpeed: Float) {
+        position += velocity * deltaTime * gameSpeed * parallaxFactor
     }
 
     /**

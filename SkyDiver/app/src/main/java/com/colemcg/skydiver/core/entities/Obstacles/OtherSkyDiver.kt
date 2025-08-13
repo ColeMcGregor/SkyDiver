@@ -63,8 +63,9 @@ class OtherSkyDiver(
      * it uses a basic chase pathfinding algorithm to track the player, this is technically a simple AI
      * @param deltaTime The time passed since the last update (in seconds).
      * @param player The player object, used for tracking the player's position
+     * @param gameSpeed The current game speed, used for adjusting the object's velocity
      */
-    override fun update(deltaTime: Float, player: Player) {
+    override fun update(deltaTime: Float, player: Player, gameSpeed: Float) {
         val playerPosition = player.position
         val distance = playerPosition - position
         val normalizedDirection = distance.normalize()
@@ -72,6 +73,6 @@ class OtherSkyDiver(
         val chaseSpeed = CHASE_SPEED
         velocity = normalizedDirection * chaseSpeed
     
-        position += velocity * deltaTime
+        position += velocity * deltaTime * gameSpeed
     }
 }

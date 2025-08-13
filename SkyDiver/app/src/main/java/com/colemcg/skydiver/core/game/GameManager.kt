@@ -72,15 +72,15 @@ class GameManager(
 
         // Update the background objects
         backgroundObjects.forEach {
-            it.update(deltaTime)
+            it.update(deltaTime, player)
             it.checkAndLoopIfNeeded(bgLoopHeight.toFloat())
         }
 
         // Update the player
-        player.update(deltaTime)
+        player.update(deltaTime, player)
 
         // Update the objects, some of which will need to know the player's position
-        objects.forEach { it.update(deltaTime, player) }
+        objects.forEach { it.update(deltaTime, player, speedManager.getGameSpeed()) }
 
         // Check for collisions between player and objects
         checkCollisions()

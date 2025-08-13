@@ -52,7 +52,7 @@ class HangGlider(
 
     }
     // TODO: This needs to be updated to have a more realistic movement pattern
-    override fun update(deltaTime: Float, player: Player) {
-        position += velocity * deltaTime
+    override fun update(deltaTime: Float, player: Player, gameSpeed: Float) {
+        position += velocity * deltaTime * gameSpeed
     }
 }
