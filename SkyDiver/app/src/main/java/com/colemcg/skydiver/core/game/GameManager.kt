@@ -72,12 +72,12 @@ class GameManager(
 
         // Update the background objects
         backgroundObjects.forEach {
-            it.update(deltaTime, player)
+            it.update(deltaTime, player, speedManager.getGameSpeed())
             it.checkAndLoopIfNeeded(bgLoopHeight.toFloat())
         }
 
         // Update the player
-        player.update(deltaTime, player)
+        player.update(deltaTime, player, speedManager.getGameSpeed())
 
         // Update the objects, some of which will need to know the player's position
         objects.forEach { it.update(deltaTime, player, speedManager.getGameSpeed()) }
@@ -91,7 +91,9 @@ class GameManager(
 
     // Draw all objects and game systems
     fun drawAll(renderer: GameRenderer) {
+        //get the player's position
         val playerPosition = player.position
+        
 
         renderer.drawBackgroundLayer(playerPosition)
         backgroundObjects.forEach { it.onDraw(renderer) }
