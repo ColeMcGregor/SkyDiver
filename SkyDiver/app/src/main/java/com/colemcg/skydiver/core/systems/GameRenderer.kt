@@ -15,6 +15,8 @@ abstract class GameRenderer {
     abstract fun drawGameObject(gameObject: GameObject, position: Vector2)
 
     // Draw the static background layer (e.g., PNG image or gradient)
+    //this receives the player's position to draw the background layer at the correct position
+    //needs to be used to center the background layer on the screen, as the background layer is a static image
     abstract fun drawBackgroundLayer(position: Vector2)
 
     // Draw a UI element (e.g., score label or icon) at a specific position
