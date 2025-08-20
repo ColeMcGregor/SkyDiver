@@ -111,7 +111,7 @@ class ScoreManager(
      * @param multiplierBoost The amount to add to the current multiplier.
      */
     fun applyMultiplierBoost(multiplierBoost: Float) {
-        comboMultiplier = ((comboMultiplier + multiplierBoost).coerceAtMost(maxMultiplier)).coerceAtLeast(MIN_MULTIPLIER)
+        comboMultiplier = ((comboMultiplier + multiplierBoost).coerceAtMost(maxMultiplier)).coerceAtLeast(baseMultiplier)
     }
 
     /**
