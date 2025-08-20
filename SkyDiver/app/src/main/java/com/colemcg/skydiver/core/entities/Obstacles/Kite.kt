@@ -24,6 +24,7 @@ import com.colemcg.skydiver.core.entities.Player
 
 const val KITE_HORIZONTAL_SPEED = 2.0f
 const val KITE_SLOW_PENALTY = 0.5f
+const val KITE_MULTIPLIER_PENALTY = -1.0f
 
 class Kite(
     position: Vector2 = Vector2(),
@@ -39,7 +40,7 @@ class Kite(
 
     //the kite will slow the player down,
     //this will risk the player falling below the speed threshhold
-    //this will also decrease the players max speed and multiplier
+    //this will also decrease the players current multiplier
     //it of course also makes a collision sound play
     override fun onCollision(
         player: Player,
@@ -47,7 +48,13 @@ class Kite(
         speedManager: SpeedManager,
         soundManager: SoundManager
     ) {
-        //TODO complete this
+        //apply the slow penalty
+        speedManager.applySlowdown(KITE_SLOW_PENALTY)
+        //reduce multiplier by one
+        scoreManager.applyMultiplierBoost(KITE_MULTIPLIER_PENALTY)
+        //play the sound
+        soundManager.playSFX("collision")
+
     }
 
     //the kite will rise according to game speed,  
@@ -58,7 +65,21 @@ class Kite(
         player: Player, 
         gameSpeed: Float
     ) {
-            //TODO complete this
+            //get the rise speed and drift speed
+            val riseSpeed = gameSpeed
+            //if the kite is moving to the right, it will drift to the right, and vice versa
+            val driftSpeed = if (velocity.x > 0) KITE_HORIZONTAL_SPEED else -KITE_HORIZONTAL_SPEED
+
+            //update the velocity
+            velocity.x = driftSpeed
+            velocity.y = riseSpeed
+
+            //update the position
+            position += velocity * deltaTime
+
+           
+
+
             
     }
 }

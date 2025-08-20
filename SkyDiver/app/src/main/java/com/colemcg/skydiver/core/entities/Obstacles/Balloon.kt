@@ -22,6 +22,8 @@ import com.colemcg.skydiver.core.entities.Player
  */
 
 const val BALLOON_HORIZONTAL_SPEED = 2.0f
+const val BALLOON_SLOW_PENALTY = 0.5f
+const val BALLOON_MULTIPLIER_PENALTY = -1.0f
 
 class Balloon(
     position: Vector2 = Vector2(),
@@ -29,8 +31,8 @@ class Balloon(
 ) : Obstacle(
     position = position,
     velocity = velocity,
-    slowPenalty = 0f,       // Not applicable — it's lethal
-    isLethal = true         // Causes game over on collision
+    slowPenalty = BALLOON_SLOW_PENALTY,       
+    isLethal = false         
 ) {
     override val spriteName = "balloon"
     override val spriteSize = Vector2(80f, 30f)
@@ -45,7 +47,13 @@ class Balloon(
         speedManager: SpeedManager,
         soundManager: SoundManager
     ) {
-        //TODO complete this
+        //apply the slow penalty
+        speedManager.applySlowdown(BALLOON_SLOW_PENALTY)
+        //reduce multiplier by one
+        scoreManager.applyMultiplierBoost(BALLOON_MULTIPLIER_PENALTY)
+        //play the sound
+        soundManager.playSFX("collision")
+
     }
 
     //the balloon will rise according to game speed,  
