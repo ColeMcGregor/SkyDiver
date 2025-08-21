@@ -53,12 +53,17 @@ class Cloud(
             // drift using only parallax scaling
             position += Vector2(velocity.x, velocity.y) * deltaTime * parallaxFactor
 
+            // gentle vertical bobbing effect for a more life-like motion
+            bobTime += deltaTime
+            position.y += kotlin.math.sin(bobTime * 0.6f) * 0.1f
 
             // wrap vertically to create continuous looping background
             checkAndLoopIfNeeded(getLoopHeight())
         }
 
         override fun onDraw(renderer: GameRenderer) {
-            renderer.drawGameObject(this, position)
+            renderer.drawGameObject(this, position) // uses renderers sprite draw with our spriteName
         }
+    /** private state for bobbing effect  */
+    private var bobTime: Float = 0f
     }
