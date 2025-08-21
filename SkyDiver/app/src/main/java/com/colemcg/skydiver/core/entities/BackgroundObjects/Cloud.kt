@@ -1,6 +1,8 @@
 import com.colemcg.skydiver.core.entities.BackgroundObject
+import com.colemcg.skydiver.core.entities.Player
 import com.colemcg.skydiver.core.geometry.Rect
 import com.colemcg.skydiver.core.geometry.Vector2
+import com.colemcg.skydiver.core.systems.GameRenderer
 
 /**
  * Passive background object that drifts across the screen.
@@ -46,5 +48,17 @@ class Cloud(
         override val hitbox: Rect
             get() = Rect(position.x, position.y, spriteSize.x, spriteSize.y)
 
+        /** Update cloud motion. Ignoring gameSpeed so clouds keep drifting during pauses/game over.*/
+        override fun update(deltaTime: Float, player: Player, gameSpeed: Float) {
+            // drift using only parallax scaling
+            position += Vector2(velocity.x, velocity.y) * deltaTime * parallaxFactor
 
+
+            // wrap vertically to create continuous looping background
+            checkAndLoopIfNeeded(getLoopHeight())
+        }
+
+        override fun onDraw(renderer: GameRenderer) {
+            renderer.drawGameObject(this, position)
+        }
     }
