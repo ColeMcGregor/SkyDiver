@@ -24,6 +24,8 @@ import com.colemcg.skydiver.core.game.GameState
  */
 //TODO: This needs to be adjusted to be more realistic
  const val CHASE_SPEED = 1.5f
+ // used to decrease overall y value changes of motion to make it harder to dodge
+ const val RISE_SPEED_MULTIPLIER = 0.5f
 
 class OtherSkyDiver(
     position: Vector2 = Vector2(),
@@ -59,20 +61,30 @@ class OtherSkyDiver(
     }
     /**
      * This is the update function for the other sky diver.
-     * It will track toward the player, making a different type of danger than the hang glider
-     * it uses a basic chase pathfinding algorithm to track the player, this is technically a simple AI
+     * It will rise continuously, inline with game speed, but slower like the player, as well as drift towards
+     * the player, using a basic chase pathfinding algorithm to track the player, but if the skydiver misses, it continues to rise
+     * and despawn like the rest of the objects
      * @param deltaTime The time passed since the last update (in seconds).
      * @param player The player object, used for tracking the player's position
      * @param gameSpeed The current game speed, used for adjusting the object's velocity
      */
     override fun update(deltaTime: Float, player: Player, gameSpeed: Float) {
-        val playerPosition = player.position
-        val distance = playerPosition - position
-        val normalizedDirection = distance.normalize()
+        // Always move upward with the game, like other obstacles
+        val riseSpeed = gameSpeed * RISE_SPEED_MULTIPLIER
     
-        val chaseSpeed = CHASE_SPEED
-        velocity = normalizedDirection * chaseSpeed
+        // Drift horizontally toward the player's current X position
+        val horizontalDelta = player.position.x - position.x
+        val horizontalDirection = when {
+            horizontalDelta > 1f -> 1f     // drift right
+            horizontalDelta < -1f -> -1f   // drift left
+            else -> 0f                     // close enough, no adjustment
+        }
     
-        position += velocity * deltaTime * gameSpeed
+        // Update velocity based on calculated directions
+        //remember the top of the sceen is 0, so the object will rise up to the top of the screen if you set the velocity to negative
+        velocity = Vector2(horizontalDirection * CHASE_SPEED, -riseSpeed)
+    
+        // Apply movement
+        position += velocity * deltaTime
     }
 }
