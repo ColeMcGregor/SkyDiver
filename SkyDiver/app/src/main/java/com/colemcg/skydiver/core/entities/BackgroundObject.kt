@@ -17,7 +17,7 @@ import com.colemcg.skydiver.core.systems.GameRenderer
 abstract class BackgroundObject(
     position: Vector2,
     velocity: Vector2 = Vector2(0f, 0f),
-    val parallaxFactor: Float = 1.0f
+    open val parallaxFactor: Float = 1.0f
 ) : GameObject(position, velocity) {
 
     /**
