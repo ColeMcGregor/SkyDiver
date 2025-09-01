@@ -123,8 +123,8 @@ class StartOverlay(
     override fun draw(renderer: GameRenderer) {
         if (!isVisible) return // Don't draw if not visible
 
-        // draw gae title at top
-        renderer.drawTitle("Skydiver") 
+        // draw game title at top
+        renderer.drawTitle() 
 
         // draw main menu buttons - replace nulls with actaul Vector2 postions when screen size has been figured out
         // drawUIElement?
