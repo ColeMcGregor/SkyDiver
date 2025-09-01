@@ -12,6 +12,7 @@ import com.colemcg.skydiver.core.game.GameLoop
 import com.colemcg.skydiver.core.game.GameManager
 import com.colemcg.skydiver.core.game.GameState
 import com.colemcg.skydiver.core.ui.UIManager
+import com.colemcg.skydiver.platform.android.rendering.AndroidGameRenderer
 
 /**
  * Android-specific implementation of the GameLoop interface.
@@ -27,6 +28,7 @@ class AndroidGameLoop(
    private val gameManager: GameManager, // Game logic controller
     private val uiManager: UIManager, // UI manager for handling overlays
     private val gameState: GameState, // Tracks if game is paused, started , etc
+    private val renderer: AndroidGameRenderer // Game renderer for drawing
 
 ) :GameLoop, Runnable{
 
@@ -97,8 +99,8 @@ class AndroidGameLoop(
                 .coerceIn(0f, 1f) // Clamp between 0 and 1
 
             // -- RENDERING --
-            gameManager.drawAll(gameManager.speedManager) // draw gameplay
-            uiManager.draw() // draw UI overlays
+            gameManager.drawAll(renderer) // draw gameplay
+            uiManager.draw(renderer) // draw UI overlays
 
             // -- TESTING WITH RED CIRCLE --
             gameView?.lockAndDraw { canvas:Canvas->
@@ -165,8 +167,8 @@ class AndroidGameLoop(
         }
 
         uiManager.update(deltaTime)
-        gameManager.drawAll(gameManager.speedManager)
-        uiManager.draw()
+        gameManager.drawAll(renderer)
+        uiManager.draw(renderer)
     }
 }
 
