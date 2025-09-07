@@ -11,6 +11,7 @@ import com.colemcg.skydiver.core.entities.GameObject
  */
 abstract class GameRenderer {
 
+
     // Draw any sprite (e.g., kite, hang glider, player,etc.)
     abstract fun drawGameObject(gameObject: GameObject, position: Vector2)
 
@@ -22,8 +23,8 @@ abstract class GameRenderer {
     // Draw a UI element (e.g., score label or icon) at a specific position
     abstract fun drawUIElement(name: String, position: Vector2)
 
-    // Draw the title text (e.g., level name or game name)
-    abstract fun drawTitle(title: String)
+    // Draw title, which just loads the title png from the assets
+    abstract fun drawTitle()
 
     // Draw a message overlay (e.g., "Paused", "Game Over")
     abstract fun drawMessageOverlay(message: String)

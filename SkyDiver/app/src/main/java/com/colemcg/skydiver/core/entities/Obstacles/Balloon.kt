@@ -63,7 +63,13 @@ class Balloon(
         player: Player, 
         gameSpeed: Float
     ) {
-            //TODO complete this
+            val riseSpeed = gameSpeed
+            val horizontalMeander= if (velocity.x > 0) BALLOON_HORIZONTAL_SPEED else -BALLOON_HORIZONTAL_SPEED
+
+            velocity.x = horizontalMeander
+            velocity.y = riseSpeed
+
+            position += velocity * deltaTime
             
     }
 }

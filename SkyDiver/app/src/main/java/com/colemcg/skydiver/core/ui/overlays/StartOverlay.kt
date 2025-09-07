@@ -18,7 +18,7 @@ import com.colemcg.skydiver.core.ui.UIOverlay
  *
  * Typically the first screen users see after splash.
  *
- * @author Jardina Gomez
+ * @author Jardina Gomez, Cole McGregor
  */
 class StartOverlay(
     // callbacks that will run when button is pressed
@@ -26,6 +26,7 @@ class StartOverlay(
     private val OnStats:() -> Unit, // called when player taps "Stats" button
     private val OnOptions:() -> Unit, // called when player taps "Options" button
     private val OnCredits:() -> Unit // called when player taps "Credits" button
+    private val OnExit:() -> Unit // called when player taps "Exit" button
 ) : UIOverlay { // UIOverlay is the base interface for all UI screens
 
     // ---BUTTON LAYOUT CONSTANTS---
@@ -43,12 +44,14 @@ class StartOverlay(
     val optionsButtonPos = Vector2(x, yStart + spacing) // Position of the Options button
     val statsButtonPos = Vector2(x, yStart + 2 * spacing) // Position of the Stats button
     val creditsButtonPos = Vector2(x, yStart + 3 * spacing) // Position of the Credits button
+    val exitButtonPos = Vector2(x, yStart + 4 * spacing) // Position of the Exit button
 
     // --- Button hitboxes ---
     val startButtonRect = Rect(startButtonPos.x, startButtonPos.y, buttonWidth, buttonHeight)
     val optionsButtonRect = Rect(optionsButtonPos.x, optionsButtonPos.y, buttonWidth, buttonHeight)
     val statsButtonRect = Rect(statsButtonPos.x, statsButtonPos.y, buttonWidth, buttonHeight)
     val creditsButtonRect = Rect(creditsButtonPos.x, creditsButtonPos.y, buttonWidth, buttonHeight)
+    val exitButtonRect = Rect(exitButtonPos.x, exitButtonPos.y, buttonWidth, buttonHeight)
 
 
     // Keeps track of whether the overlay is currently visible
@@ -94,6 +97,7 @@ class StartOverlay(
                 optionsButtonRect.contains(pos) -> OnOptions() // Options button tapped
                 statsButtonRect.contains(pos) -> OnStats() // Stats button tapped
                 creditsButtonRect.contains(pos) -> OnCredits() // Credits button tapped
+                exitButtonRect.contains(pos) -> OnExit() // Exit button tapped
             }
         }
 
@@ -119,15 +123,16 @@ class StartOverlay(
     override fun draw(renderer: GameRenderer) {
         if (!isVisible) return // Don't draw if not visible
 
-        // draw gae title at top
-        renderer.drawText("Skydiver", 100f, 50f, size = 48f) // Example title
+        // draw game title at top
+        renderer.drawTitle() 
 
         // draw main menu buttons - replace nulls with actaul Vector2 postions when screen size has been figured out
         // drawUIElement?
-        renderer.drawButton("Start", /* Vector2(x1,y1) */ null) // Start button
-        renderer.drawButton("Options", /* Vector2(x2,y2) */ null) // Options button
-        renderer.drawButton("Stats", /* Vector2(x3,y3) */ null) // Stats button
-        renderer.drawButton("Credits", /* Vector2(x4,y4) */ null) // Credits button
+        renderer.drawUIElement("Start", null) // Start button
+        renderer.drawUIElement("Options", null) // Options button
+        renderer.drawUIElement("Stats", null) // Stats button
+        renderer.drawUIElement("Credits", null) // Credits button
+        renderer.drawUIElement("Exit", null) // Exit button
     }
 
 }
