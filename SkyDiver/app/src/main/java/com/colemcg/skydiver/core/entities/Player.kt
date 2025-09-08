@@ -57,15 +57,24 @@ class Player(
     //player hitbox
     //this is a getter for the hitbox, and is used to get the hitbox of the player
     //the hitbox changes size based on the state of the player
+    private val _hitbox = Rect(0f, 0f, NORMAL_PLAYER_WIDTH, NORMAL_PLAYER_HEIGHT)
+
     override val hitbox: Rect
-    get() {
-        val size = when (state) {
-            PlayerState.Normal -> Vector2(NORMAL_PLAYER_WIDTH, NORMAL_PLAYER_HEIGHT)
-            PlayerState.Slowed -> Vector2(SLOWED_PLAYER_WIDTH, SLOWED_PLAYER_HEIGHT)
-            PlayerState.Fast -> Vector2(FAST_PLAYER_WIDTH, FAST_PLAYER_HEIGHT)
+        get() {
+            val size = when (state) {
+                PlayerState.Normal -> Vector2(NORMAL_PLAYER_WIDTH, NORMAL_PLAYER_HEIGHT)
+                PlayerState.Slowed -> Vector2(SLOWED_PLAYER_WIDTH, SLOWED_PLAYER_HEIGHT)
+                PlayerState.Fast -> Vector2(FAST_PLAYER_WIDTH, FAST_PLAYER_HEIGHT)
+            }
+
+            _hitbox.x = position.x
+            _hitbox.y = position.y
+            _hitbox.width = size.x
+            _hitbox.height = size.y
+
+            return _hitbox
         }
-        return Rect(position.x, position.y, size.x, size.y)
-    }
+
 
     //increase speed by 0.1f
     fun goFaster() { currentSpeed += 0.1f }
@@ -96,13 +105,18 @@ class Player(
 
 //override functions from GameObject
 
+    //update player position, overridden from GameObject
+    override fun update(deltaTime: Float) {
+        position += velocity * deltaTime * gameSpeed //classic update function
+    }
+
     //update player position
     //this is a classic update pattern for a game object, used to allow for smooth movement/actions to occur
     //it helps simulate time passing, and allows for smooth animations
-    override fun update(deltaTime: Float, player: Player, gameSpeed: Float) {
-        position += velocity * deltaTime * gameSpeed
-        hitbox.x = position.x
-        hitbox.y = position.y
+    //called from GameManager to update the player's speed
+    fun update(deltaTime: Float, currentSpeed: Float) {
+        gameSpeed = currentSpeed //update the game speed
+        update(deltaTime) //classic update function
     }
 
     /**
