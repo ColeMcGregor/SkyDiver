@@ -39,6 +39,9 @@ abstract class Obstacle(
     //a backing field is a private variable that is used to store the value of a property
     private val _hitbox = Rect(position.x, position.y, spriteSize.x, spriteSize.y)
 
+    //changing vector2 for some obstacles to use for the player position
+    var playerGoalPosition: Vector2 = Vector2(0f, 0f)
+
     //this is a property that is used to get the hitbox, overrides the hitbox property in GameObject
     override val hitbox: Rect
         get() {
@@ -56,9 +59,15 @@ abstract class Obstacle(
      *  
      * SHOULD BE OVERRIDDEN BY SUBCLASSES, NOT A SUFFICIENT MOVEMENT FUNCTION
      */
-    override fun update(deltaTime: Float, player: Player, gameSpeed: Float) {
-        position += velocity * deltaTime * gameSpeed
+    override fun update(deltaTime: Float) {
+        position += velocity * deltaTime * gameSpeed //classic update function
     }
+
+    fun update(deltaTime: Float, playerPosition: Vector2, currentSpeed: Float) {
+        playerGoalPosition = playerPosition //used by the obstacles that track player location
+        gameSpeed = currentSpeed        // normal game speed update
+        update(deltaTime)
+    }   //end of update function
 
     /**
      * Triggered when player collides with this obstacle.
