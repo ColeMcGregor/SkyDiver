@@ -31,7 +31,7 @@ class GameManager(
     //make a player object
     val player = Player(Vector2(0f, 0f))
     //make a list of objects to hold all the objects in the game
-    private val objects = mutableListOf<GameObject>()
+    private val gameObjects = mutableListOf<GameObject>()
     //make a list of background objects to hold all the background objects in the game
     private val backgroundObjects = mutableListOf<BackgroundObject>()
     //make a spawner object to handle the spawning of objects
@@ -68,7 +68,7 @@ class GameManager(
         scoreManager.update(deltaTime)
 
         // Update the spawner
-        spawner.update(deltaTime, objects)
+        spawner.update(deltaTime, gameObjects)
 
         // Update the background objects
         backgroundObjects.forEach {
@@ -79,8 +79,18 @@ class GameManager(
         // Update the player
         player.update(deltaTime, player, speedManager.getGameSpeed())
 
-        // Update the objects, some of which will need to know the player's position
-        objects.forEach { it.update(deltaTime, player, speedManager.getGameSpeed()) }
+        /**
+         * update the game objects, dependent on their type
+         * Kotlin has a feature called Smart Casting, which allows the compiler to know the type of the object
+         * when using "is", one needn't cast the object to the type, the compiler will do it for you
+         */
+        for (obj in gameObjects) {
+            when (obj) {
+                is Collectible -> obj.update(deltaTime, speedManager.getGameSpeed()) //collectibles will provide a bonus of some form
+                is Obstacle    -> obj.update(deltaTime, player.position, speedManager.getGameSpeed()) //obstacles will cause the player to slow down lose multipliers, or end the game
+                else           -> println("Error: GameObject is not a Collectible or Obstacle") //catches errors of this form
+            }
+        }
 
         // Check for collisions between player and objects
         checkCollisions()
@@ -97,7 +107,7 @@ class GameManager(
 
         renderer.drawBackgroundLayer(playerPosition)
         backgroundObjects.forEach { it.onDraw(renderer) }
-        objects.forEach { it.onDraw(renderer) }
+        gameObjects.forEach { it.onDraw(renderer) }
         player.onDraw(renderer)
     }
 
@@ -113,7 +123,7 @@ class GameManager(
             val playerHitbox = player.hitbox
         
             //check all objects
-            for (obj in objects) {            
+            for (obj in gameObjects) {            
                 //if the objects hitbox intersects with the player's hitbox                                                       //for each object in the objects list       
                 if (playerHitbox.intersects(obj.hitbox)) {      
                     //when the object is a...                                     //if the player's hitbox intersects with the object's hitbox
@@ -136,12 +146,12 @@ class GameManager(
 
     // Remove dead objects(not background objects) which means they have passed the screen height
     private fun removeDeadObjects() {
-        objects.removeIf { it.position.y > SCREEN_HEIGHT || it.isMarkedForRemoval }
+        gameObjects.removeIf { it.position.y > SCREEN_HEIGHT || it.isMarkedForRemoval }
     }
 
     // Reset the game, calling all necessary reset methods, and then spawns the initial background objects
     fun reset() {
-        objects.clear()
+        gameObjects.clear()
         backgroundObjects.clear()
         player.reset()
         speedManager.reset()
