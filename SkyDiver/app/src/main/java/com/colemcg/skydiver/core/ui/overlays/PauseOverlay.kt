@@ -25,7 +25,7 @@ import com.colemcg.skydiver.core.game.GameState
 class PauseOverlay(
     private val OnResume:() -> Unit, // called when player taps "Resume" button
     private val OnOptions:() -> Unit, // called when player taps "Options" button
-    private val OnMainMenu:() -> Unit // called when player taps "Main Menu" button
+    private val OnMainMenu:() -> Unit, // called when player taps "Main Menu" button
     private val OnExit:() -> Unit // called when player taps "Exit" button
 ) : UIOverlay {
     val buttonWidth = 200f // Width of each button

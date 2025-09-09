@@ -56,9 +56,6 @@ class Cloud(
             // gentle vertical bobbing effect for a more life-like motion
             bobTime += deltaTime
             position.y += kotlin.math.sin(bobTime * 0.6f) * 0.1f
-
-            // wrap vertically to create continuous looping background
-            checkAndLoopIfNeeded(getLoopHeight())
         }
 
         override fun onDraw(renderer: GameRenderer) {

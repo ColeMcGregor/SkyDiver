@@ -55,7 +55,8 @@ class LevelManager {
 
     /**
      * Clears all registered levels and resets the current level.
-     * Useful for reinitialization in test or reset scenarios.
+     * Useful for reinitialization i
+     * n test or reset scenarios.
      */
     fun clear() {
         levels.clear()
