@@ -61,8 +61,13 @@ abstract class Collectible(
     /**
      * Moves the collectible based on its velocity.
      */
-    override fun update(deltaTime: Float, player: Player, gameSpeed: Float) {
-        position += velocity * deltaTime * gameSpeed
+    override fun update(deltaTime: Float) {
+        position += velocity * deltaTime * gameSpeed 
+    }
+
+    fun update(deltaTime: Float, currentSpeed: Float) {
+        gameSpeed = currentSpeed
+        update(deltaTime)
     }
 
     /**

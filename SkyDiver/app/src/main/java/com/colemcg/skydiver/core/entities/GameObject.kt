@@ -16,9 +16,11 @@ import com.colemcg.skydiver.core.systems.GameRenderer
 abstract class GameObject(
     open var position: Vector2,
     open var velocity: Vector2 = Vector2(0f, 0f),
-    open var isMarkedForRemoval: Boolean = false
+    open var isMarkedForRemoval: Boolean = false,
+    open var gameSpeed: Float = 1.0f // Default fallback speed, should be overloaded in concrete update functions
     
 ) {
+    open val objectId: String = "" // to be overridden when constructing concrete classes, used to identify the object
     open val spriteName: String = "" // to be overridden in concrete classes (e.g. "player", "obstacle", "cloud", "collectible")
     open val spriteSize: Vector2 = Vector2(64f, 64f) // default size, will be overridden in concrete classes
     abstract val hitbox: Rect // will be overridden in concrete classes, used for collision detection
@@ -26,10 +28,8 @@ abstract class GameObject(
     /**
      * Updates the object's internal state.
      * @param deltaTime The time passed since the last update (in seconds).
-     * @param player The player object, used for tracking the player's position
-     * @param gameSpeed The current game speed, used for adjusting the object's velocity
      */
-    abstract fun update(deltaTime: Float, player: Player, gameSpeed: Float)
+    abstract fun update(deltaTime: Float)
 
     /**
      * Draws the object using the provided GameRenderer.
